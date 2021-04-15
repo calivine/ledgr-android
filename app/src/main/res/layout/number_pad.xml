@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/num_pad">
+
+    <TableRow
+        android:id="@+id/row1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/num1"
+            style="@style/NumberPadButton"
+            android:tag="@string/num1"
+            android:text="@string/num1" />
+        <Button
+            android:id="@+id/num2"
+            style="@style/NumberPadButton"
+            android:text="@string/num2" />
+
+        <Button
+            android:id="@+id/num3"
+            style="@style/NumberPadButton"
+            android:text="@string/num3" />
+
+    </TableRow>
+    <TableRow
+        android:id="@+id/row2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/row1">
+
+        <Button
+            android:id="@+id/num4"
+            style="@style/NumberPadButton"
+            android:text="@string/num4"
+            />
+
+        <Button
+            android:id="@+id/num5"
+            style="@style/NumberPadButton"
+            android:text="@string/num5"
+            />
+        <Button
+            android:id="@+id/num6"
+            style="@style/NumberPadButton"
+            android:text="@string/num6"
+            />
+
+    </TableRow>
+    <TableRow
+        android:id="@+id/row3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/row2">
+
+        <Button
+            android:id="@+id/num7"
+            style="@style/NumberPadButton"
+            android:text="@string/num7"
+            />
+
+        <Button
+            android:id="@+id/num8"
+            style="@style/NumberPadButton"
+            android:text="@string/num8"
+            />
+        <Button
+            android:id="@+id/num9"
+            style="@style/NumberPadButton"
+            android:text="@string/num9"
+            />
+
+    </TableRow>
+    <TableRow
+        android:id="@+id/row4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/row3">
+
+        <Button
+            android:id="@+id/decimalPoint"
+            style="@style/NumberPadButton"
+            android:text="@string/num_dot"
+            />
+
+        <Button
+            android:id="@+id/num0"
+            style="@style/NumberPadButton"
+            android:text="@string/num0"
+            />
+
+        <Button
+            android:id="@+id/delete"
+            style="@style/NumberPadButton"
+            android:text="@string/num_del"
+            />
+    </TableRow>
+
+</TableLayout>

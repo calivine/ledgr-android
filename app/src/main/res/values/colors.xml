@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#38C172</color>
+    <color name="colorPrimaryDark">#1fc75a</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="success">#38C172</color>
+    <color name="active">#2342DD</color>
+    <color name="black">#000</color>
+    <color name="ledgrPrimary">#38C172</color>
+    <color name="alert">#DC0E08</color>
+    <color name="warning">#F4DC02</color>
+    <color name="header">#5D6464</color>
+    <color name="secondary">#686868</color>
+    <color name="white">#FFFFFF</color>
+    <color name="transparent">@null</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
+    <color name="light_blue_A200">#FF40C4FF</color>
+    <color name="light_blue_A400">#FF00B0FF</color>
+    <color name="black_overlay">#66000000</color>
+
+</resources>
