@@ -1,6 +1,6 @@
 package com.example.ledgr
 
-import Ledgr
+import com.example.ledgr.data.LedgrDataSource
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
@@ -49,7 +49,9 @@ class NewTransactionFragment : Fragment() {
 
         val dateToggle = requireActivity().findViewById<TextView>(R.id.date_toggle)
 
+        // 
         val inflater = requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
         val numPad = inflater.inflate(R.layout.number_pad, number_pad_layout) as TableLayout
         val numberPad = numPad.getChildAt(0) as TableLayout
 
@@ -142,7 +144,7 @@ class NewTransactionFragment : Fragment() {
         Log.d("acali-ledgrJSON: ", json.toString())
 
         val ledgr =
-            Ledgr(requireActivity(), apiKey)
+            LedgrDataSource(apiKey, requireActivity())
         val res = ledgr.newTransaction().post(json, this.startMainActivity())
         Log.d("acali-ledgrResult: ", res.toString())
         /*

@@ -1,9 +1,8 @@
-import android.app.Activity
+package com.example.ledgr.data
+
 import android.content.Context
 import android.util.Log
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.MutableLiveData
-import com.example.ledgr.NewTransactionFragment
 import com.google.gson.JsonObject
 import com.koushikdutta.ion.Ion
 import java.time.Instant
@@ -11,8 +10,12 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 
 
-open class Ledgr(private val activity: Context, user: String) {
-    private val auth: String = "?api_token=${user}"
+open class LedgrDataSource(token: String, activity: Context) {
+
+    private val _activity = activity
+    private val bearer = "Bearer $token"
+
+    private val auth: String = "?api_token=${token}"
     private val routes = mapOf(
         "transactions" to "activity/transactions",
         "create" to "activity/transactions",
@@ -26,7 +29,7 @@ open class Ledgr(private val activity: Context, user: String) {
         Ion.getDefault(activity).conscryptMiddleware.enable(false)
     }
 
-    fun transactions(param: String? = null): Ledgr {
+    fun transactions(param: String? = null): LedgrDataSource {
         val dateString = createDateString()
         val to = "${dateString.substringBeforeLast("-")}-31"
         val from = "${dateString.substringBeforeLast("-")}-01"
@@ -36,13 +39,13 @@ open class Ledgr(private val activity: Context, user: String) {
         return this
     }
 
-    fun budget(param: String? = null): Ledgr {
+    fun budget(param: String? = null): LedgrDataSource {
         this.uri =
             if (param != null) "${this.root}${this.routes["budget"]}/${param}${this.auth}" else "${this.root}${this.routes["budget"]}${this.auth}"
         return this
     }
 
-    fun newTransaction(): Ledgr {
+    fun newTransaction(): LedgrDataSource {
         this.uri = "${this.root}${this.routes["create"]}${this.auth}"
         return this
     }
@@ -57,7 +60,7 @@ open class Ledgr(private val activity: Context, user: String) {
 
     open fun post(json: JsonObject, callback:Unit?=null, results: MutableLiveData<Any>?=null) : JsonObject {
         this.method = "POST"
-        val jsonn = Ion.with(activity)
+        val jsonn = Ion.with(_activity)
             .load(this.method, this.uri.toString())
             .setLogging("acali-API", Log.INFO)
             .setJsonObjectBody(json)
@@ -76,12 +79,14 @@ open class Ledgr(private val activity: Context, user: String) {
         return jsonn
     }
 
-    open fun get(results: MutableLiveData<Any>) {
-        this.method = "GET"
-        Ion.with(activity)
-            .load(this.method, this.uri.toString())
-            .setLogging("acali-API", Log.INFO)
-            .asJsonObject()
+    open fun get(route: String) : JsonObject {
+        return Ion.with(_activity)
+                .load(route)
+                .setHeader("authorization", bearer)
+                .setLogging("acali-API", Log.INFO)
+                .asJsonObject()
+                .get()
+                /**
             .setCallback { ex, result ->
                 if (ex != null) {
                     Log.i("acali", ex.message)
@@ -89,9 +94,23 @@ open class Ledgr(private val activity: Context, user: String) {
                 Log.i("acali", result.toString())
                 results.postValue(result.get("data"))
             }
+            */
 
 
     }
 
-
+    open fun getLegacy(results: MutableLiveData<Any>) {
+        Ion.with(_activity)
+                .load(this.uri)
+                .setHeader("authorization", bearer)
+                .setLogging("acali-API", Log.INFO)
+                .asJsonObject()
+        .setCallback { ex, result ->
+        if (ex != null) {
+        Log.i("acali", ex.message)
+        }
+        Log.i("acali", result.toString())
+        results.postValue(result.get("data"))
+        }
+    }
 }

@@ -2,6 +2,7 @@ package com.example.ledgr
 
 import androidx.appcompat.app.AppCompatActivity
 import android.annotation.SuppressLint
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -26,6 +27,8 @@ class LaunchActivity : AppCompatActivity() {
     // private lateinit var fullscreenContentControls: LinearLayout
     private val hideHandler = Handler()
     private val launchHandler = Handler()
+
+
 
     @SuppressLint("InlinedApi")
     private val hidePart2Runnable = Runnable {
@@ -77,6 +80,7 @@ class LaunchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_launch)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+
         isFullscreen = true
 
         // Set up the user interaction to manually show or hide the system UI.
@@ -120,7 +124,7 @@ class LaunchActivity : AppCompatActivity() {
             myIntent.putExtra("username", "caloggero.a@gmail.com")
             myIntent.putExtra("api", "LHWmiGNoaVbrgYTv7qETIVpoNkJ8H9IB1Y3Ze72voXY5Oei8Pyl7gp2Apfpw")
 
-            startActivity(myIntent)
+            startActivity(myIntent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
         else {
             Log.d("acaliLAUNCH", "no file")

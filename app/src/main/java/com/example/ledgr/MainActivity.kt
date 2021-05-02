@@ -5,12 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
+import com.example.ledgr.ui.dashboard.DashboardFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.row.*
-import kotlinx.coroutines.selects.select
-import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -50,7 +46,6 @@ class MainActivity : AppCompatActivity() {
             }
             selectedFragment.arguments = bundle
             val transaction = supportFragmentManager.beginTransaction()
-
             transaction.replace(R.id.layout_frame, selectedFragment).commit()
 
             true
@@ -64,28 +59,28 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        Log.i("acali", "onPause was called")
+        Log.i("acali-MainActivity", "onPause was called")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.i("acali", "onStop was called")
+        Log.i("acali-MainActivity", "onStop was called")
     }
 
     override fun onResume() {
         super.onResume()
 
-        Log.i("acali", "onResume was called")
+        Log.i("acali-MainActivity", "onResume was called")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.i("acali", "onDestroy was called")
+        Log.i("acali-MainActivity", "onDestroy was called")
     }
 
     override fun onRestart() {
         super.onRestart()
-        Log.i("acali", "onRestart was called")
+        Log.i("acali-MainActivity", "onRestart was called")
     }
 
 

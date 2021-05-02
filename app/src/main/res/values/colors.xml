@@ -2,7 +2,10 @@
 <resources>
     <color name="colorPrimary">#38C172</color>
     <color name="colorPrimaryDark">#1fc75a</color>
+    <color name="colorSecondary">#C13888</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="colorOnPrimary">#1F1F1F</color>
+    <color name="colorOnSecondary">#FFFF</color>
     <color name="success">#38C172</color>
     <color name="active">#2342DD</color>
     <color name="black">#000</color>

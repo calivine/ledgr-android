@@ -8,8 +8,9 @@ import android.view.ViewGroup
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import android.widget.TextView
 import java.util.*
-import Ledgr
+import com.example.ledgr.data.LedgrDataSource
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.JsonArray
 import kotlinx.android.synthetic.main.fragment_view_transactions.*
@@ -42,13 +43,16 @@ class ViewTransactionsFragment : Fragment() {
 
 
         val ledgr =
-            Ledgr(requireActivity(), apiKey)
-        ledgr.transactions().get(transactions)
+            LedgrDataSource(apiKey, requireActivity())
+        ledgr.transactions().getLegacy(transactions)
 
         transactions.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
 
             Log.d("acaliObserveTransList", it.toString())
-
+            val check = it as JsonArray
+            if (check.size() == 0) {
+                val placeholder = TextView(requireActivity())
+            }
             for (item in it as JsonArray) {
                 val amount = if (item.asJsonObject.get("amount").asString.substringAfter(
                         '.',
@@ -78,7 +82,7 @@ class ViewTransactionsFragment : Fragment() {
         transaction_list_refresh.setOnRefreshListener {
             Log.d("acaliONREFRESH", "onRefresh called from SwipeRefreshLayout")
             transactionList.clear()
-            ledgr.transactions().get(transactions)
+            ledgr.transactions().getLegacy(transactions)
             transaction_list_refresh.isRefreshing = false
         }
     }
