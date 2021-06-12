@@ -17,7 +17,9 @@
                     android:id="@+id/transaction_list"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="5dp"
-                    android:layout_marginBottom="75dp"/>
+                    android:layout_marginBottom="75dp"
+                    android:divider="@android:color/transparent"
+                    android:dividerHeight="24.0dp"/>
 
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

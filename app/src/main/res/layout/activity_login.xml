@@ -20,14 +20,14 @@
         android:layout_marginBottom="48dp"
         android:textSize="28sp"
         android:textStyle="bold"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorOnSurface"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/usernameContainer" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/usernameContainer"
-        style="@style/Widget.AppTheme.TextInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -47,7 +47,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/passwordWrapper"
-        style="@style/Widget.AppTheme.TextInputLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

@@ -9,8 +9,10 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 import android.widget.TextView
+import com.example.ledgr.data.model.Transaction
+import com.example.ledgr.ui.widget.SpendingView
 
-class TransactionListAdapter(private val context: Activity, private val transactions: ArrayList<Map<*, *>>)
+class TransactionListAdapter(private val context: Activity, private val transactions: ArrayList<Transaction>)
     : BaseAdapter(){
 
         override fun getCount(): Int {
@@ -27,19 +29,21 @@ class TransactionListAdapter(private val context: Activity, private val transact
 
         override fun getView(position: Int, view:View?, parent: ViewGroup): View {
             val inflator = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-            val rowView = inflator.inflate(R.layout.row, parent, false)
+            val rowView = inflator.inflate(R.layout.transaction_item, parent, false)
 
             val descriptionText = rowView.findViewById(R.id.description) as TextView
             val dateText = rowView.findViewById(R.id.date) as TextView
-            val amountText = rowView.findViewById(R.id.amount) as TextView
+            val amountText = rowView.findViewById(R.id.amount) as SpendingView
             val categoryText = rowView.findViewById(R.id.category) as TextView
 
-            val transaction = getItem(position) as Map<*,*>
+            val transaction = getItem(position) as Transaction
 
-            descriptionText.text = transaction["description"].toString()
-            dateText.text = transaction["date"].toString()
-            amountText.text = transaction["amount"].toString()
-            categoryText.text = transaction["category"].toString()
+            // descriptionText.text = transaction["description"].toString()
+            descriptionText.text =transaction.description
+            // dateText.text = transaction["date"].toString()
+            dateText.text = transaction.date
+            amountText.setFormattedText(transaction.amount.toString())
+            categoryText.text = transaction.category
             /**
             rowView.setOnClickListener {
                 Log.i("acali-rowView", descriptionText.text.toString())

@@ -1,4 +1,4 @@
-package com.example.ledgr
+package com.example.ledgr.ui.newTransaction
 
 import com.example.ledgr.data.LedgrDataSource
 import android.app.DatePickerDialog
@@ -12,6 +12,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.lifecycle.MutableLiveData
+import com.example.ledgr.MainActivity
+import com.example.ledgr.R
+import com.example.ledgr.ui.widget.date.Date
 import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.JsonObject
 import com.koushikdutta.ion.Ion
@@ -44,7 +47,6 @@ class NewTransactionFragment : Fragment() {
 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
-        @Suppress("DEPRECATION")
         super.onActivityCreated(savedInstanceState)
 
         val dateToggle = requireActivity().findViewById<TextView>(R.id.date_toggle)
@@ -103,7 +105,7 @@ class NewTransactionFragment : Fragment() {
 
     private fun numberPadButtonHandler(view: View) {
         view as Button
-        Log.d("acaliNUMPAD:", view.text.toString())
+        // Log.d("acaliNUMPAD:", view.text.toString())
         when (view.text.toString()) {
             "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "." -> numberPadClick(view.text.toString())
             // Backspace
@@ -113,8 +115,10 @@ class NewTransactionFragment : Fragment() {
 
     private fun transactionSubmit() {
         val form: MutableMap<String, TextInputEditText> = mutableMapOf()
-        val apiKey = arguments?.getString("api").toString().removeSurrounding("\"")
-        val username = arguments?.getString("username").toString().removeSurrounding("\"")
+        // val apiKey = arguments?.getString("api").toString().removeSurrounding("\"")
+        // val username = arguments?.getString("username").toString().removeSurrounding("\"")
+        val sharedPref = activity?.getSharedPreferences(getString(R.string.api_token), Context.MODE_PRIVATE) ?: return
+        val token = sharedPref.getString(getString(R.string.api_token), "")
         form["desc"] = requireActivity().findViewById(R.id.description)
 
         // Validate user input
@@ -130,6 +134,8 @@ class NewTransactionFragment : Fragment() {
 
         // Format date for submitting to server
         val date = dateDisplay.getCompleteDate(date_label.text.toString())
+
+        // Add data to JSON Object
         val json = JsonObject()
         json.addProperty("date", date)
         json.addProperty("amount", amount_display.text.toString())
@@ -143,9 +149,8 @@ class NewTransactionFragment : Fragment() {
 
         Log.d("acali-ledgrJSON: ", json.toString())
 
-        val ledgr =
-            LedgrDataSource(apiKey, requireActivity())
-        val res = ledgr.newTransaction().post(json, this.startMainActivity())
+        val ledgr = LedgrDataSource(requireActivity(), token)
+        val res = ledgr.post("https://api.ledgr.site/transactions", json)  // ledgr.newTransaction().postLegacy(json, this.startMainActivity())
         Log.d("acali-ledgrResult: ", res.toString())
         /*
         Ion.getDefault(activity).conscryptMiddleware.enable(false)
@@ -164,6 +169,7 @@ class NewTransactionFragment : Fragment() {
             }
 
          */
+        startMainActivity()
     }
 
     private fun showDatePickerDialog() {
@@ -235,11 +241,23 @@ class NewTransactionFragment : Fragment() {
     private fun numberPadClick(number:String) {
         val displayText = amount_display.text.toString()
         Log.i("acaliNUMPADCLICK", amount_display.text.toString())
+        if ((number == "." && amount_display.text.contains('.'))) {
+                return
+        }
+        else if (displayText.contains(Regex("^[\\d]+\\.[\\d]{2}")) && displayText != "0.00") {
+            return
+        }
         if (displayText == "0.00" || displayText == "0") {
 
             if (number == ".") {
-                val new = "${amount_display.text}${number}"
-                amount_display.text = new
+                if (amount_display.text.contains('.')) {
+                    return
+                }
+                else {
+                    val new = "${amount_display.text}${number}"
+                    amount_display.text = new
+                }
+
             }
             else {
                 amount_display.text = number
@@ -256,7 +274,7 @@ class NewTransactionFragment : Fragment() {
         val displayText = amount_display.text.toString()
         amount_display.text = displayText.dropLast(1)
         if (amount_display.text == "") {
-            amount_display.text = "0"
+            amount_display.text = resources.getString(R.string.amount_label)
         }
 
     }

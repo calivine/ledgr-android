@@ -19,16 +19,18 @@ class LoginDataSource {
         try {
 
             val json = JsonObject()
-            json.addProperty("email", username)
+            json.addProperty("username", username)
             json.addProperty("password", password)
-            val ledgr = LedgrLogin("", activity)
-            var user = ledgr.authenticate().post(json)
+
+            val ledgr = LedgrLogin(activity, "")
+            var user = ledgr.login(json)
             Log.i("acali", user.toString())
-            user = user.getAsJsonObject("user")
-            val loggedIn = LoggedInUser(user["id"].toString(), user["name"].toString(), apiKey = user["api_token"].toString())
+            user = user.getAsJsonObject("data")
+
+            val loggedIn = LoggedInUser(user["name"].toString(), apiKey = user["api_token"].toString().removeSurrounding("\""))
 
             activity.openFileOutput("usr", Context.MODE_PRIVATE).use {
-                it.write("$username:$password".toByteArray())
+                it.write("$username:$password:${loggedIn.apiKey.removeSurrounding("\"")}".toByteArray())
             }
             return Result.Success(loggedIn)
         } catch (e: Throwable) {

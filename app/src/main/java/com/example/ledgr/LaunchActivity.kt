@@ -3,6 +3,7 @@ package com.example.ledgr
 import androidx.appcompat.app.AppCompatActivity
 import android.annotation.SuppressLint
 import android.app.ActivityOptions
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -80,6 +81,7 @@ class LaunchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_launch)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        Log.d("acali-LaunchActivity", "onCreate was called")
 
         isFullscreen = true
 
@@ -106,9 +108,7 @@ class LaunchActivity : AppCompatActivity() {
         // Trigger the initial hide() shortly after the activity has been
         // created, to briefly hint to the user that UI controls
         // are available.
-        delayedHide(100)
 
-        launchHandler.postDelayed(launchRunnable, 1000)
     }
 
     private fun launch()
@@ -120,9 +120,28 @@ class LaunchActivity : AppCompatActivity() {
 
             val userCreds = user.nextLine().toString().split(':')
             Log.i("acalifile", userCreds.toString())
-            val myIntent = Intent(this, MainActivity::class.java)
-            myIntent.putExtra("username", "caloggero.a@gmail.com")
-            myIntent.putExtra("api", "LHWmiGNoaVbrgYTv7qETIVpoNkJ8H9IB1Y3Ze72voXY5Oei8Pyl7gp2Apfpw")
+            val username = userCreds[0]
+            val apiKey = userCreds[2].removeSurrounding('"'.toString())
+
+            /**
+            val sharedPref = getSharedPreferences(
+                getString(R.string.api_token), Context.MODE_PRIVATE)
+
+            with (sharedPref.edit()) {
+                putString(getString(R.string.api_token), apiKey)
+                apply()
+            }
+            */
+
+            val myIntent = Intent(this, MainActivity::class.java).apply {
+                this.putExtra("username", username)
+                this.putExtra("api", apiKey)
+            }
+            /**
+             * Depreciated
+            myIntent.putExtra("username", username)
+            myIntent.putExtra("api", apiKey)
+            */
 
             startActivity(myIntent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
         }
@@ -198,13 +217,44 @@ class LaunchActivity : AppCompatActivity() {
     /**
      * Returns true if file exists
      */
-    private fun checkForFile(path: String?): Boolean
+    private fun checkForFile(usr: String?): Boolean
     {
-        val file = File(getFilesDir().getAbsolutePath(), path)
+        val file = File(getFilesDir().getAbsolutePath(), usr)
         Log.d("acali:checkForFile", file.absolutePath.toString())
         Log.d("acali:checkForFile", file.isFile.toString())
         return file.exists()
     }
+
+    override fun onRestart() {
+        super.onRestart()
+        Log.d("acali-LaunchActivity", "OnRestart was called")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("acali-LaunchActivity", "OnResume was called")
+        // launch()
+        delayedHide(100)
+
+        launchHandler.postDelayed(launchRunnable, 1000)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("acali-LaunchActivity", "onPause was called")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("acali-LaunchActivity", "onStop was called")
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("acali-LaunchActivity", "onDestroy was called")
+    }
+
 
     companion object {
         /**

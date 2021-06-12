@@ -3,39 +3,49 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.dashboard.DashboardFragment">
 
-    <TextView
-        android:id="@+id/spending_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="26sp"
-        android:layout_marginTop="25dp"
-        android:layout_marginStart="15dp"
-        android:textColor="@color/header"
-        android:text="@string/spending_label"
-        />
 
-    <TextView
-        android:id="@+id/spending_display"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="55sp"
-        android:layout_marginTop="65dp"
-        android:layout_marginStart="15dp"
-        android:textColor="@color/black"
+        <com.example.ledgr.ui.widget.ProgressBar
+            android:id="@+id/progress_bar_test"
+            style="@style/BudgetProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"/>
 
-        />
+        <TextView
+            android:id="@+id/spending_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="36dp"
+            android:text="@string/spending_label"
+            android:textSize="18sp" />
+
+        <com.example.ledgr.ui.widget.SpendingView
+            android:id="@+id/spending_display"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="72dp"
+            android:textColor="?attr/colorOnBar"
+            android:textSize="36sp"
+
+            />
+
+
+
 
     <ListView
         android:id="@+id/budget_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
-        >
-    </ListView>
+        android:layout_marginBottom="80dp"
+        android:divider="@color/transparent"
 
-
+        />
 
 
 </FrameLayout>

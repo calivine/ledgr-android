@@ -1,34 +1,47 @@
 <resources>
 
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="BaseAppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="android:colorBackground">@color/white</item>
-        <item name="colorPrimary">@color/ledgrPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorOnPrimary">@color/colorOnPrimary</item>
-        <item name="colorSecondary">@color/colorSecondary</item>
-        <item name="colorOnSecondary">@color/colorOnSecondary</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/ledgr_primary</item>
+        <item name="colorPrimaryDark">@color/ledgr_primary_dark</item>
+        <item name="colorPrimaryVariant">@color/ledgr_primary_dark</item>
+
+        <item name="colorSecondary">@color/ledgr_secondary</item>
+        <item name="colorSecondaryVariant">@color/ledgr_secondary</item>
+
+        <item name="android:colorBackground">@color/blue_grey_50</item>
+        <item name="colorAccent">@color/material_accent_red</item>
         <item name="colorSurface">@color/white</item>
-        <item name="bottomNavigationStyle">@style/Widget.App.BottomNavigationView</item>
-        <item name="android:font">@font/fira_sans_medium</item>
+        <item name="colorBar">@color/light_grey_200</item>
+        <item name="colorIcon">@color/black</item>
+
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorOnSecondaryVariant">@color/grey_600</item>
+        <item name="colorOnSurface">@color/grey_900</item>
+        <item name="colorOnSurfaceVariant">@color/secondary</item>
+        <item name="colorOnBackground">@color/grey_900</item>
+        <item name="colorOnBar">@color/black</item>
+        <!--
         <item name="android:windowActivityTransitions">true</item>
-        <item name="android:windowEnterTransition">@transition/explode_transition</item>
-
-
+        <item name="android:windowEnterTransition">@transition/fade_transition</item>
+        -->
     </style>
+
+    <style name="AppTheme" parent="BaseAppTheme"/>
 
     <style name="AppTheme.Fullscreen" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:actionBarStyle">@style/Widget.AppTheme.ActionBar.Fullscreen</item>
         <item name="android:windowActionBarOverlay">true</item>
         <item name="android:windowBackground">@null</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/ledgr_primary</item>
+        <!--
         <item name="android:windowActivityTransitions">true</item>
         <item name="android:windowExitTransition">@transition/explode_transition</item>
+        -->
     </style>
 
-    <style name="ThemeOverlay.Ledgr.FullscreenContainer" parent="">
-        <item name="fullscreenBackgroundColor">@color/ledgrPrimary</item>
+    <style name="ThemeOverlay.Ledgr.FullscreenContainer" parent="AppTheme.Fullscreen">
+        <item name="fullscreenBackgroundColor">@color/ledgr_primary</item>
         <item name="fullscreenTextColor">@color/black</item>
     </style>
 </resources>

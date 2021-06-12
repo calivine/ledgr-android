@@ -3,9 +3,10 @@ package com.example.ledgr
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
+import com.example.ledgr.ui.account.AccountFragment
 import com.example.ledgr.ui.dashboard.DashboardFragment
+import com.example.ledgr.ui.newTransaction.NewTransactionFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -20,20 +21,24 @@ class MainActivity : AppCompatActivity() {
 
         val api = intent.getStringExtra("api")
 
-        Log.d("acaliIntentapi", api.toString())
 
-        val bundle = Bundle()
-        bundle.putString("api", api)
+        val bundle = Bundle().apply {
+            this.putString("api", api)
+        }
 
-        bottom_navigaiton.setOnNavigationItemSelectedListener { item ->
+
+
+        bottom_navigation.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.transactions__view -> {
                     selectedFragment = ViewTransactionsFragment::class.java.newInstance()
+                    // val navItem = this.findNavController(item.itemId)
+
 
 
                 }
 
-                R.id.transaction__create -> {
+                R.id.transaction_create -> {
                     selectedFragment = NewTransactionFragment::class.java.newInstance()
 
                 }
@@ -41,6 +46,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav__home -> {
                     selectedFragment = DashboardFragment::class.java.newInstance()
 
+                }
+
+                R.id.account_settings -> {
+                    selectedFragment = AccountFragment::class.java.newInstance()
                 }
 
             }
@@ -51,38 +60,48 @@ class MainActivity : AppCompatActivity() {
             true
 
         }
+
+        bottom_navigation.setOnNavigationItemReselectedListener {
+
+        }
+
         selectedFragment = DashboardFragment::class.java.newInstance()
         selectedFragment.arguments = bundle
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.layout_frame, selectedFragment).commit()
+
     }
 
+
+
+
+/**
     override fun onPause() {
         super.onPause()
-        Log.i("acali-MainActivity", "onPause was called")
+        Log.d("acali-MainActivity", "onPause was called")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.i("acali-MainActivity", "onStop was called")
+        Log.d("acali-MainActivity", "onStop was called")
     }
 
     override fun onResume() {
         super.onResume()
 
-        Log.i("acali-MainActivity", "onResume was called")
+        Log.d("acali-MainActivity", "onResume was called")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.i("acali-MainActivity", "onDestroy was called")
+        Log.d("acali-MainActivity", "onDestroy was called")
     }
 
     override fun onRestart() {
         super.onRestart()
-        Log.i("acali-MainActivity", "onRestart was called")
+        Log.d("acali-MainActivity", "onRestart was called")
     }
-
+*/
 
 
 }

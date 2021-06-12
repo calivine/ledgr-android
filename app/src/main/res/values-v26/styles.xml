@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="BudgetProgressBar" parent="BudgetProgressBarBase">
+        <item name="android:layout_marginHorizontal">@dimen/layout_margin</item>
+
+    </style>
+
+    <style name="ListItem" parent="">
+        <item name="android:layout_marginVertical">@dimen/list_vertical_margin</item>
+        <item name="android:layout_marginHorizontal">@dimen/list_margin</item>
+
+    </style>
+</resources>

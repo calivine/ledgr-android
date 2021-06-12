@@ -1,6 +1,7 @@
 package com.example.ledgr.data
 
 import android.content.Context
+import android.os.Build
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.JsonObject
@@ -10,12 +11,14 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 
 
-open class LedgrDataSource(token: String, activity: Context) {
+open class LedgrDataSource(activity: Context, token: String?) {
 
     private val _activity = activity
-    private val bearer = "Bearer $token"
+    private var bearer = "Bearer $token"
 
-    private val auth: String = "?api_token=${token}"
+    private lateinit var _bearer: String
+
+    private lateinit var auth: String
     private val routes = mapOf(
         "transactions" to "activity/transactions",
         "create" to "activity/transactions",
@@ -25,18 +28,21 @@ open class LedgrDataSource(token: String, activity: Context) {
     var method: String? = null
     var uri: String? = null
 
+    private val _liveData = MutableLiveData<Any>()
+
+
     init {
         Ion.getDefault(activity).conscryptMiddleware.enable(false)
     }
 
-    fun transactions(param: String? = null): LedgrDataSource {
-        val dateString = createDateString()
-        val to = "${dateString.substringBeforeLast("-")}-31"
-        val from = "${dateString.substringBeforeLast("-")}-01"
-        this.uri =
-            if (param != null) "${this.root}${this.routes["transactions"]}/${from}/${to}/${param}${this.auth}" else "${this.root}${this.routes["transactions"]}/${from}/${to}${this.auth}"
-        // this.uri = "${this.root}${this.routes["transactions"]}/${from}/${to}${this.auth}"
-        return this
+    fun setApiToken(token: String) {
+        _bearer = token
+
+        auth = "?api_token=${token}"
+    }
+
+    fun connect(): MutableLiveData<Any> {
+        return _liveData
     }
 
     fun budget(param: String? = null): LedgrDataSource {
@@ -45,66 +51,61 @@ open class LedgrDataSource(token: String, activity: Context) {
         return this
     }
 
-    fun newTransaction(): LedgrDataSource {
-        this.uri = "${this.root}${this.routes["create"]}${this.auth}"
-        return this
-    }
-
-
     private fun createDateString(): String {
-        val zdt: ZonedDateTime =
-            ZonedDateTime.ofInstant(Instant.now(), ZoneId.of("America/Montreal"))
-        return zdt.toString().substringBefore("T")
+        if (Build.VERSION.SDK_INT > 25) {
+            val zdt: ZonedDateTime =
+                ZonedDateTime.ofInstant(Instant.now(), ZoneId.of("America/Montreal"))
+            return zdt.toString().substringBefore("T")
+        }
+        return ""
+
+
     }
 
-
-    open fun post(json: JsonObject, callback:Unit?=null, results: MutableLiveData<Any>?=null) : JsonObject {
-        this.method = "POST"
-        val jsonn = Ion.with(_activity)
-            .load(this.method, this.uri.toString())
+    open fun post(url: String, json: JsonObject): JsonObject {
+        return Ion.with(_activity)
+            .load("POST", url)
+            .setHeader("authorization", bearer)
             .setLogging("acali-API", Log.INFO)
             .setJsonObjectBody(json)
             .asJsonObject()
             .get()
-                /*
-            .setCallback { ex, result ->
-                if (ex != null) {
-                    Log.i("acali", ex.message)
-                }
-                Log.i("acali", result.toString())
-                callback.run { this }
-                results?.postValue(result.get("user"))
-            }*/
-
-        return jsonn
     }
 
-    open fun get(route: String) : JsonObject {
+
+
+    open fun postLegacy(
+        json: JsonObject,
+        callback: Unit? = null,
+        results: MutableLiveData<Any>? = null
+    ): JsonObject {
+        this.method = "POST"
+        /*
+    .setCallback { ex, result ->
+        if (ex != null) {
+            Log.i("acali", ex.message)
+        }
+        Log.i("acali", result.toString())
+        callback.run { this }
+        results?.postValue(result.get("user"))
+    }*/
         return Ion.with(_activity)
-                .load(route)
-                .setHeader("authorization", bearer)
-                .setLogging("acali-API", Log.INFO)
-                .asJsonObject()
-                .get()
-                /**
-            .setCallback { ex, result ->
-                if (ex != null) {
-                    Log.i("acali", ex.message)
-                }
-                Log.i("acali", result.toString())
-                results.postValue(result.get("data"))
-            }
-            */
-
-
+            .load(method, uri.toString())
+            .setHeader("authorization", bearer)
+            .setLogging("acali-API", Log.INFO)
+            .setJsonObjectBody(json)
+            .asJsonObject()
+            .get()
     }
 
-    open fun getLegacy(results: MutableLiveData<Any>) {
-        Ion.with(_activity)
-                .load(this.uri)
-                .setHeader("authorization", bearer)
-                .setLogging("acali-API", Log.INFO)
-                .asJsonObject()
+    open fun get(route: String): JsonObject {
+        return Ion.with(_activity)
+            .load(route)
+            .setHeader("authorization", bearer)
+            .setLogging("acali-API", Log.INFO)
+            .asJsonObject()
+            .get()
+        /**
         .setCallback { ex, result ->
         if (ex != null) {
         Log.i("acali", ex.message)
@@ -112,5 +113,23 @@ open class LedgrDataSource(token: String, activity: Context) {
         Log.i("acali", result.toString())
         results.postValue(result.get("data"))
         }
+         */
+    }
+
+    fun getData(url: String) {
+        Ion.with(_activity)
+            .load(url)
+            .setHeader("authorization", bearer)
+            .setLogging("acali-API", Log.INFO)
+            .asJsonObject()
+            .setCallback { ex, result ->
+                if (ex != null) {
+                    Log.i("acali", ex.message)
+                } else if (result != null) {
+                    // Log.i("acali", result.getAsJsonArray("data").toString())
+                    _liveData.value = result.getAsJsonArray("data")
+                }
+
+            }
     }
 }

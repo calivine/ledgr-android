@@ -129,22 +129,24 @@ class LoginActivity : AppCompatActivity() {
      * Start main activity with logged in user.
      */
     private fun updateUiWithUser(model: LoggedInUserView) {
-        val welcome = "${getString(R.string.welcome)} ${model.displayName}"
         val displayName = model.displayName
 
         Log.d("acaliupdateUIwUser", "${model.displayName} ${model.apiKey}")
 
-        Toast.makeText(
-            applicationContext,
-            welcome,
-            Toast.LENGTH_LONG
-        ).show()
-        val myIntent = Intent(this, MainActivity::class.java)
-        myIntent.putExtra("username", displayName)
-        myIntent.putExtra("api", model.apiKey)
+        val myIntent = Intent(this, MainActivity::class.java).apply {
+            this.putExtra("username", displayName)
+            this.putExtra("api", model.apiKey.removeSurrounding("\""))
+        }
+        // Save User in sharedPreferences
+        val sharedPref = getSharedPreferences(
+            getString(R.string.api_token), Context.MODE_PRIVATE)
+
+        with (sharedPref.edit()) {
+            putString(getString(R.string.api_token), model.apiKey)
+            apply()
+        }
 
         startActivity(myIntent)
-
     }
 
     private fun showLoginFailed(@StringRes errorString: Int) {

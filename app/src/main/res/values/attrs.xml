@@ -3,4 +3,23 @@
         <attr name="fullscreenBackgroundColor" format="color" />
         <attr name="fullscreenTextColor" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="PieChart">
+        <attr name="exampleString" format="string" />
+        <attr name="exampleDimension" format="dimension" />
+        <attr name="exampleColor" format="color" />
+        <attr name="exampleDrawable" format="color|reference" />
+        <attr name="boxFillColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="ProgressBar">
+        <attr name="planned" format="float|integer" />
+        <attr name="actual" format="float|integer" />
+    </declare-styleable>
+
+    <attr name="colorOnBar" format="reference" />
+    <attr name="colorBar" format="reference" />
+    <attr name="colorOnSecondaryVariant" format="reference"/>
+    <attr name="colorOnSurfaceVariant" format="reference" />
+    <attr name="colorIcon" format="reference" />
 </resources>

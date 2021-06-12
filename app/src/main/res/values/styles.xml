@@ -3,7 +3,7 @@
     <!-- Base application theme. -->
 
 
-    <style name="Widget.App.BottomNavigationView" parent="">
+    <style name="Widget.App.BottomNavigationView" parent="Widget.MaterialComponents.ActionBar.Primary">
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
     </style>
 
@@ -11,66 +11,81 @@
         <!--
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorOnPrimary">@color/colorOnPrimary</item>
-        -->
-        <item name="android:background">@color/white</item>
 
+        <item name="android:background">@color/white</item>
+        -->
     </style>
 
     <style name="NumberPad" parent="">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_gravity">center</item>
-        <item name="android:background">@color/white</item>
+        <!-- <item name="android:background">@color/white</item> -->
         <item name="android:layout_marginTop">25dp</item>
     </style>
 
-    <style name="NumberPadButton" parent="Widget.MaterialComponents.Button">
+    <style name="NumberPadButton" parent="">
         <item name="android:textSize">28sp</item>
-        <item name="backgroundTint">@color/white</item>
-        <item name="android:textColor">@color/black</item>
+        <!--<item name="backgroundTint">@color/white</item> -->
+        <!-- <item name="android:textColor">@color/black</item> -->
+        <item name="backgroundTint">?attr/colorSurface</item>
         <item name="android:padding">13dp</item>
     </style>
 
     <style name="NumberDisplay" parent="Widget.MaterialComponents.TextView">
         <item name="android:textSize">80sp</item>
-        <item name="android:textColor">@color/active</item>
+        <item name="android:textColor">?attr/colorPrimaryVariant</item>
     </style>
 
     <style name="ListItem" parent="">
-        <item name="android:textSize">16sp</item>
-        <item name="android:textColor">@color/black</item>
+        <!-- <item name="android:textSize">16sp</item> -->
+        <!-- <item name="android:layout_marginHorizontal">25dp</item> -->
+        <item name="android:layout_marginLeft">@dimen/list_margin</item>
+        <item name="android:layout_marginRight">@dimen/list_margin</item>
+        <!-- <item name="android:colorBackground">@color/white</item> -->
+
     </style>
 
     <style name="TransactionListItem" parent="ListItem">
-        <item name="android:layout_marginHorizontal">18dp</item>
+
     </style>
 
     <style name="TransactionListItem.Secondary" parent="TransactionListItem">
-        <item name="android:textColor">@color/secondary</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
         <item name="android:textSize">12sp</item>
     </style>
 
     <style name="BudgetListItem" parent="ListItem">
-        <item name="android:layout_marginHorizontal">18dp</item>
+
     </style>
 
-    <style name="BudgetProgressBar" parent="Widget.AppCompat.ProgressBar.Horizontal">
-        <item name="android:progressBackgroundTint">@color/white</item>
-        <item name="android:progressTint">@color/ledgrPrimary</item>
-        <item name="android:layout_marginHorizontal">25dp</item>
+    <style name="BudgetProgressBarBase" parent=""/>
+
+    <style name="BudgetProgressBar" parent="BudgetProgressBarBase">
+        <item name="android:layout_marginLeft">@dimen/layout_margin</item>
+        <item name="android:layout_marginRight">@dimen/layout_margin</item>
     </style>
 
-    <style name="Widget.AppTheme.ActionBar.Fullscreen" parent="Widget.AppCompat.ActionBar">
+    <style name="ButtonOutline" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:textColor">?attr/colorPrimary</item>
+    </style>
+
+
+    <!--
+    <style name="Widget.AppTheme.ActionBar.Fullscreen" parent="Widget.MaterialComponents.ActionBar.Primary">
         <item name="android:background">@color/white</item>
     </style>
-    <!--
-        <style name="Widget.AppTheme.ButtonBar.Fullscreen" parent="">
-            <item name="android:background">@color/black_overlay</item>
-            <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
-        </style>
+
+    <style name="Widget.AppTheme.ButtonBar.Fullscreen" parent="">
+        <item name="android:background">@color/black_overlay</item>
+        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
+    </style>
+
     -->
 
-    <style name="Widget.AppTheme.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <!--
+            <style name="Widget.AppTheme.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
-    </style>
+            </style>
+            -->
 </resources>
