@@ -4,6 +4,9 @@ package com.example.ledgr
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.example.ledgr.ui.account.AccountFragment
 import com.example.ledgr.ui.dashboard.DashboardFragment
 import com.example.ledgr.ui.newTransaction.NewTransactionFragment
@@ -13,6 +16,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     lateinit var selectedFragment: Fragment
+    private lateinit var navController: NavController
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,8 +30,14 @@ class MainActivity : AppCompatActivity() {
             this.putString("api", api)
         }
 
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.layout_frame) as NavHostFragment
+        navController = navHostFragment.navController
+
+        val bottomNavigationView = bottom_navigation
+        bottomNavigationView.setupWithNavController(navController)
 
 
+        /**
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.transactions__view -> {
@@ -69,6 +79,8 @@ class MainActivity : AppCompatActivity() {
         selectedFragment.arguments = bundle
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.layout_frame, selectedFragment).commit()
+
+        */
 
     }
 

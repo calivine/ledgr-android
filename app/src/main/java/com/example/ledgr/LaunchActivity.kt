@@ -1,5 +1,6 @@
 package com.example.ledgr
 
+import android.animation.ObjectAnimator
 import androidx.appcompat.app.AppCompatActivity
 import android.annotation.SuppressLint
 import android.app.ActivityOptions
@@ -10,6 +11,8 @@ import android.os.Handler
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.view.animation.AnticipateInterpolator
+import android.view.animation.DecelerateInterpolator
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -119,7 +122,6 @@ class LaunchActivity : AppCompatActivity() {
             val user = Scanner(openFileInput("usr"))
 
             val userCreds = user.nextLine().toString().split(':')
-            Log.i("acalifile", userCreds.toString())
             val username = userCreds[0]
             val apiKey = userCreds[2].removeSurrounding('"'.toString())
 
@@ -137,13 +139,23 @@ class LaunchActivity : AppCompatActivity() {
                 this.putExtra("username", username)
                 this.putExtra("api", apiKey)
             }
+
+
+
+            fullscreenContent
+            ObjectAnimator.ofFloat(fullscreenContent, "textSize", 16F, 0F).apply {
+                duration = 1000
+                interpolator = AnticipateInterpolator()
+                start()
+            }
             /**
              * Depreciated
             myIntent.putExtra("username", username)
             myIntent.putExtra("api", apiKey)
             */
 
-            startActivity(myIntent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+            // startActivity(myIntent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
+            startActivity(myIntent)
         }
         else {
             Log.d("acaliLAUNCH", "no file")

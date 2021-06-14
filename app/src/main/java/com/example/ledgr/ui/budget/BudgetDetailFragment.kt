@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.ledgr.R
 import com.example.ledgr.TransactionListAdapter
 import com.example.ledgr.data.model.Transaction
+import com.example.ledgr.databinding.FragmentBudgetDetailBinding
 import com.example.ledgr.ui.widget.date.Date
 import com.example.ledgr.ui.widget.LineChart
 import com.google.gson.JsonArray
@@ -46,8 +47,15 @@ class BudgetDetailFragment : Fragment() {
         )
 
         val token = sharedPrefs!!.getString(getString(R.string.api_token), "")
+
         //val target = requireActivity().intent.getStringExtra("category")
+
+
+
         val target = arguments?.getString("category")
+        //val bundle = arguments
+
+
         val transactionsListView = requireActivity().findViewById<ListView>(R.id.budget_details_list)
         val transactionList = ArrayList<Transaction>()
 

@@ -161,6 +161,7 @@ class DashboardFragment : Fragment() {
             val display = "$${roundedTotal}"
             // spendingDisplay?.setFormattedText(display)
             spending_display.setFormattedText(display)
+
         })
     }
 

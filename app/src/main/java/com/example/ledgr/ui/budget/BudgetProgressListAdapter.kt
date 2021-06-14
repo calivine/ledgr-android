@@ -67,11 +67,7 @@ class BudgetProgressListAdapter(
 
         // progressBar.max = budget.planned.roundToInt()
         // progressBar.progress = budget.actual.toString().toFloat().roundToInt()
-        val budgetIcon = "restaurant"
-        val iconMap = mapOf<String, Int>(
-            "restaurant" to R.drawable.restaurant,
-            "build" to R.drawable.build
-        )
+
         /**
         icon.setImageDrawable(
             iconMap[budgetIcon]?.let {
@@ -88,8 +84,6 @@ class BudgetProgressListAdapter(
             setPlanned(budget.planned)
         }
         */
-
-
 
         rowView.setOnClickListener {
             val budgetToastText = "${categoryText.text}: $label"

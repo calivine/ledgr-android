@@ -1,8 +1,21 @@
+
+
 apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
+
+
 apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'androidx.navigation.safeargs'
+
+// apply plugin: 'kotlin-parcelize'
+
+
+
+
+
 
 android {
     compileSdkVersion 29
@@ -13,6 +26,9 @@ android {
         versionCode 3
         versionName "0.0.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildFeatures {
+        viewBinding = true
     }
     buildTypes {
         release {
@@ -28,6 +44,7 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
 }
 
 dependencies {
@@ -65,5 +82,7 @@ dependencies {
 
     // AAChart
     implementation 'com.github.AAChartModel:AAChartCore-Kotlin:-SNAPSHOT'
+
+
 
 }

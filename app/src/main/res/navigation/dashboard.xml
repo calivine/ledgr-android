@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home"
+    app:startDestination="@+id/dashboard">
+    <fragment
+        android:id="@+id/dashboard"
+        android:name="com.example.ledgr.ui.dashboard.DashboardFragment"
+        android:label="@string/nav_home"
+        tools:layout="@layout/fragment_dashboard"
+        >
+<!--
+        <action
+            android:id="@+id/action_dashboard_to_budgetDetailFragment"
+            app:destination="@id/budgetDetailFragment">
+            <argument
+                android:name="category"
+                app:argType="string"
+                />
+        </action>
+        -->
+    </fragment>
+    <fragment
+        android:id="@+id/budgetDetailFragment"
+        android:name="com.example.ledgr.ui.budget.BudgetDetailFragment"
+        android:label="BudgetDetailFragment"
+        tools:layout="@layout/fragment_budget_detail">
+
+
+        <argument
+            android:name="category"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+
+
+</navigation>

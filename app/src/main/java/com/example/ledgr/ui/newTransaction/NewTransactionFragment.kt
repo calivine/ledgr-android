@@ -30,7 +30,7 @@ class NewTransactionFragment : Fragment() {
 
 
     var date: MutableLiveData<String> = MutableLiveData()
-    var dateDisplay = Date()
+    private var dateDisplay = Date()
     // var amountDisplay: MutableLiveData<String> = MutableLiveData()
     private val categoriesList = ArrayList<String>()
     private lateinit var categoriesListAdapter : ArrayAdapter<String>
@@ -45,13 +45,11 @@ class NewTransactionFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_new_transaction, container, false)
     }
 
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val dateToggle = requireActivity().findViewById<TextView>(R.id.date_toggle)
 
-        // 
+        //
         val inflater = requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
         val numPad = inflater.inflate(R.layout.number_pad, number_pad_layout) as TableLayout
@@ -99,7 +97,6 @@ class NewTransactionFragment : Fragment() {
         */
         val date = dateDisplay.display()
         date_label.text = date
-
 
     }
 
@@ -190,7 +187,7 @@ class NewTransactionFragment : Fragment() {
             }
             Log.d("acalidpd:", formattedDay.toString())
             Log.d("acalidpd:", formattedMonth.toString())
-            val date: String = "${year}-${formattedMonth}-${formattedDay}"
+            val date = "${year}-${formattedMonth}-${formattedDay}"
             /*
             val date: String = if (day - 10 >= 0) {
                 "${year}-${month+1}-${day}"
@@ -288,7 +285,7 @@ class NewTransactionFragment : Fragment() {
             .setCallback { ex, result ->
                 Log.i("acali-RESULT:", result["data"].toString())
                 if (ex != null) {
-                    Log.d("acali-ERROR:", ex.message)
+                    Log.d("acali-ERROR:", ex.message.toString())
                 }
 
                 val items = result.getAsJsonArray("data")

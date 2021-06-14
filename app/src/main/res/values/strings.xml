@@ -10,10 +10,10 @@
     <string name="transaction_category">Category</string>
     <string name="transaction_button">Save</string>
 
-    <string name="transactions_list">View</string>
-    <string name="transaction_create">New</string>
-    <string name="navigation_home">Home</string>
-    <string name="settings">Settings</string>
+    <string name="nav_list">View</string>
+    <string name="nav_create">New</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_settings">Settings</string>
 
 
 
