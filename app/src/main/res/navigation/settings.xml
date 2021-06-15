@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/account_settings"
-        android:name="com.example.ledgr.ui.account.AccountFragment"
+        android:name="com.example.ledgr.AccountFragment"
         android:label="@string/nav_settings"
         tools:layout="@layout/fragment_account"
         >

@@ -47,15 +47,4 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-<!--
-    <com.example.ledgr.ui.budget.BudgetProgressBar
-        android:id="@+id/progress_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:min="0"
-        style="@style/BudgetProgressBar"
-        app:layout_constraintTop_toBottomOf="@id/budget_category"
-        app:layout_constraintStart_toStartOf="parent"/>
--->
-
 </androidx.constraintlayout.widget.ConstraintLayout>

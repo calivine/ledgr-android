@@ -4,12 +4,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProvider
 import com.example.ledgr.R
-import com.example.ledgr.TransactionListAdapter
+import com.example.ledgr.adapters.TransactionListAdapter
 import com.example.ledgr.data.model.Transaction
 import com.example.ledgr.ui.widget.date.Date
 import com.example.ledgr.ui.widget.LineChart
 import com.github.aachartmodel.aainfographics.aachartcreator.*
-import com.github.aachartmodel.aainfographics.aaoptionsmodel.AATooltip
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import kotlinx.android.synthetic.main.activity_budget_details.*

@@ -1,4 +1,4 @@
-package com.example.ledgr.ui.account
+package com.example.ledgr.viewmodels
 
 import androidx.lifecycle.ViewModel
 

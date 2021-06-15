@@ -1,14 +1,13 @@
-package com.example.ledgr
+package com.example.ledgr.adapters
 
 import android.app.Activity
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 import android.widget.TextView
+import com.example.ledgr.R
 import com.example.ledgr.data.model.Transaction
 import com.example.ledgr.ui.widget.SpendingView
 

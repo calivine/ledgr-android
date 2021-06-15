@@ -10,9 +10,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.ledgr.R
-import com.example.ledgr.TransactionListAdapter
+import com.example.ledgr.adapters.TransactionListAdapter
 import com.example.ledgr.data.model.Transaction
-import com.example.ledgr.databinding.FragmentBudgetDetailBinding
 import com.example.ledgr.ui.widget.date.Date
 import com.example.ledgr.ui.widget.LineChart
 import com.google.gson.JsonArray

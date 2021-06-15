@@ -14,9 +14,10 @@ import com.example.ledgr.ui.widget.date.Date
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
+import com.example.ledgr.adapters.TransactionListAdapter
 import com.example.ledgr.data.model.Transaction
-import com.example.ledgr.ui.transactions.TransactionsViewModel
-import com.example.ledgr.ui.transactions.TransactionsViewModelFactory
+import com.example.ledgr.viewmodels.TransactionsViewModel
+import com.example.ledgr.viewmodels.TransactionsViewModelFactory
 import com.google.gson.JsonArray
 import kotlinx.android.synthetic.main.fragment_view_transactions.*
 
@@ -59,7 +60,8 @@ class ViewTransactionsFragment : Fragment() {
         val url = "https://api.ledgr.site/transactions?month=${Date().getCurrentMonth()}&year=${Date().getCurrentYear()}"
 
         // Initialize Transactions ViewModel
-        transactionsViewModel = ViewModelProvider(this, TransactionsViewModelFactory(requireActivity(), token!!.toString())).get(TransactionsViewModel::class.java)
+        transactionsViewModel = ViewModelProvider(this, TransactionsViewModelFactory(requireActivity(), token!!.toString())).get(
+            TransactionsViewModel::class.java)
 
         // Connect to Ledgr Database
         transactionsViewModel.get(url)

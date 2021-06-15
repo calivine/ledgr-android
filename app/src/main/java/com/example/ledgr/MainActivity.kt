@@ -7,9 +7,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import com.example.ledgr.ui.account.AccountFragment
-import com.example.ledgr.ui.dashboard.DashboardFragment
-import com.example.ledgr.ui.newTransaction.NewTransactionFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -38,6 +35,8 @@ class MainActivity : AppCompatActivity() {
 
 
         /**
+         * Decpreciated Navigation
+         *
         bottom_navigation.setOnNavigationItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.transactions__view -> {

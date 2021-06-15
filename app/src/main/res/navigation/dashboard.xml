@@ -7,20 +7,17 @@
     app:startDestination="@+id/dashboard">
     <fragment
         android:id="@+id/dashboard"
-        android:name="com.example.ledgr.ui.dashboard.DashboardFragment"
+        android:name="com.example.ledgr.DashboardFragment"
         android:label="@string/nav_home"
         tools:layout="@layout/fragment_dashboard"
         >
-<!--
+
         <action
             android:id="@+id/action_dashboard_to_budgetDetailFragment"
             app:destination="@id/budgetDetailFragment">
-            <argument
-                android:name="category"
-                app:argType="string"
-                />
+
         </action>
-        -->
+
     </fragment>
     <fragment
         android:id="@+id/budgetDetailFragment"
@@ -34,6 +31,9 @@
             android:defaultValue="@null"
             app:argType="string"
             app:nullable="true" />
+        <action android:id="@+id/action_pop_out_of_details"
+            app:popUpTo="@id/home"
+            app:popUpToInclusive="true" />
     </fragment>
 
 

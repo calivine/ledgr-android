@@ -1,4 +1,4 @@
-package com.example.ledgr.ui.dashboard
+package com.example.ledgr.viewmodels
 
 import android.content.Context
 import android.util.Log

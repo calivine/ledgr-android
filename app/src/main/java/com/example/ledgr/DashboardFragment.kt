@@ -1,4 +1,4 @@
-package com.example.ledgr.ui.dashboard
+package com.example.ledgr
 
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
@@ -9,15 +9,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.BounceInterpolator
 import android.view.animation.DecelerateInterpolator
-import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.example.ledgr.R
+import com.android.volley.toolbox.Volley
 import com.example.ledgr.data.DataBuilder
 import com.example.ledgr.ui.widget.date.Date
-import com.example.ledgr.ui.budget.BudgetProgressListAdapter
+import com.example.ledgr.adapters.BudgetProgressListAdapter
+import com.example.ledgr.viewmodels.DashboardViewModel
+import com.example.ledgr.viewmodels.DashboardViewModelFactory
 import com.google.gson.JsonArray
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.budget_item.view.*
@@ -86,6 +86,7 @@ class DashboardFragment : Fragment() {
 
         // Connect to Ledgr Database
         dashboardViewModel.get(url)
+        
 
         dashboardViewModel.budget.observe(viewLifecycleOwner, Observer {
             val budgetList: JsonArray = it as JsonArray
@@ -131,11 +132,17 @@ class DashboardFragment : Fragment() {
             }
             */
              */
+            /**
             val budgetListAdapter = BudgetProgressListAdapter(
                 requireActivity(),
                 viewList
             )
-            budget_list.adapter = budgetListAdapter
+            */
+            val budgetListAdapter = BudgetProgressListAdapter(viewList, requireActivity())
+            // budget_list.adapter = budgetListAdapter
+            budget_list_recycler.adapter = budgetListAdapter
+
+
             // budgetlist?.adapter = budgetListAdapter
         })
 
@@ -200,5 +207,6 @@ class DashboardFragment : Fragment() {
         Log.d("acaliDASHBOARD_FRAGMENT", "onViewStateRestored was called")
 
     }
+
 
 }

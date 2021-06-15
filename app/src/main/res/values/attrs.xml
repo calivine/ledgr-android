@@ -5,11 +5,12 @@
     </declare-styleable>
 
     <declare-styleable name="PieChart">
-        <attr name="exampleString" format="string" />
-        <attr name="exampleDimension" format="dimension" />
-        <attr name="exampleColor" format="color" />
-        <attr name="exampleDrawable" format="color|reference" />
-        <attr name="boxFillColor" format="color" />
+        <attr name="title" format="string" />
+        <attr name="dimension" format="dimension" />
+        <attr name="backgroundColor" format="color" />
+        <attr name="titleColor" format="color"/>
+        <attr name="boxFillColor" format="color"/>
+
     </declare-styleable>
 
     <declare-styleable name="ProgressBar">
