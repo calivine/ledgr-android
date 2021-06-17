@@ -12,6 +12,9 @@ import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.ledgr.data.DataBuilder
 import com.example.ledgr.ui.widget.date.Date
@@ -86,7 +89,7 @@ class DashboardFragment : Fragment() {
 
         // Connect to Ledgr Database
         dashboardViewModel.get(url)
-        
+
 
         dashboardViewModel.budget.observe(viewLifecycleOwner, Observer {
             val budgetList: JsonArray = it as JsonArray

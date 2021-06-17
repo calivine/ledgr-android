@@ -1,30 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".AccountFragment">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/version_label"
-            android:layout_marginHorizontal="@dimen/button_block_margin"
-            android:id="@+id/logout"
-            style="@style/ButtonOutline"
-            android:text="@string/logout_text"/>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/toggle_light_dark"
+            app:layout_constraintStart_toEndOf="@id/toogle_dark_mode"
+            app:layout_constraintTop_toTopOf="@id/toogle_dark_mode"
+            app:layout_constraintBottom_toBottomOf="@id/toogle_dark_mode" />
+
+
+        <Switch
+            android:id="@+id/toogle_dark_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="false"
+            android:textOff="@string/mode_light"
+            android:textOn="@string/mode_dark"
+            android:text="@string/mode_dark"
+            app:layout_constraintBottom_toTopOf="@id/choose_theme"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+
+        <Button
+            android:id="@+id/choose_theme"
+            android:text="@string/theme_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/logout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:contentDescription="@string/theme_button" />
+
+        <Button
+            android:id="@+id/logout"
+            style="@style/ButtonOutline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/button_block_margin"
+            android:text="@string/logout_text"
+            app:layout_constraintBottom_toTopOf="@id/version_label"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/version_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/button_block_margin"
             android:layout_marginBottom="75dp"
-            android:id="@+id/version_label"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+    <FrameLayout
+        android:id="@+id/settings_tray_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

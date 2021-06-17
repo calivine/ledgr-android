@@ -1,6 +1,8 @@
 package com.example.ledgr
 
 
+import android.content.Context
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -18,20 +20,30 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // setTheme(R.style.AppTheme_Blue)
+        val sharedPref =
+            getSharedPreferences(getString(R.string.api_token), Context.MODE_PRIVATE)
+                ?: return
+        val theme = sharedPref.getInt(getString(R.string.current_theme), R.style.AppTheme)
+        setTheme(theme)
         setContentView(R.layout.activity_main)
 
+
+        /**
         val api = intent.getStringExtra("api")
 
 
         val bundle = Bundle().apply {
             this.putString("api", api)
         }
+        */
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.layout_frame) as NavHostFragment
         navController = navHostFragment.navController
 
         val bottomNavigationView = bottom_navigation
         bottomNavigationView.setupWithNavController(navController)
+
 
 
         /**

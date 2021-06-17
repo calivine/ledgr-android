@@ -76,6 +76,16 @@
         <item name="android:textColor">?attr/colorPrimary</item>
     </style>
 
+    <style name="ThemeSelectButton" parent="Widget.AppCompat.ButtonBar">
+        <item name="android:layout_marginTop">@dimen/layout_margin</item>
+        <item name="android:layout_marginLeft">@dimen/layout_margin</item>
+        <item name="android:layout_marginRight">@dimen/layout_margin</item>
+    </style>
+
+    <style name="SettingsTray" parent="">
+        <item name="android:background">?attr/colorSurface</item>
+    </style>
+
 
     <!--
     <style name="Widget.AppTheme.ActionBar.Fullscreen" parent="Widget.MaterialComponents.ActionBar.Primary">

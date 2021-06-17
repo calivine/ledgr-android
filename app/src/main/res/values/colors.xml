@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ledgr_primary">#FF38C172</color>
-    <color name="ledgr_primary_dark">#FF1fc75a</color>
-    <color name="ledgr_secondary">#FFC13888</color>
+    <color name="ledgr_primary">#FF00C853</color>
+    <color name="ledgr_primary_dark">#FF009624</color>
+    <color name="ledgr_secondary">#FFFF51A4</color>
     <color name="material_accent_red">#FFD81B60</color>
     <color name="success">#38C172</color>
     <color name="active">#2342DD</color>
@@ -30,6 +30,22 @@
     <color name="teal_50">#FFE0F2F1</color>
     <color name="blue_grey_50">#FFECEFF1</color>
     <color name="teal_200">#FF5FB496</color>
+    
+    <color name="red_800">#FFC62828</color>
+    <color name="red_400">#FFFF5F52</color>
+    <color name="red_900">#FF8E0000</color>
+
+    <color name="teal_500">#FF28C6C6</color>
+    <color name="teal_300">#FF6DF9F9</color>
+    <color name="teal_700">#FF009595</color>
+
+    <color name="yellow_500">#FFECF236</color>
+    <color name="yellow_300">#FFFFFF6F</color>
+    <color name="yellow_700">#FFB6C000</color>
+
+    <color name="blue_500">#FF3C36F2</color>
+    <color name="blue_300">#FF8063FF</color>
+    <color name="blue_700">#FF0005BE</color>
 
 
 

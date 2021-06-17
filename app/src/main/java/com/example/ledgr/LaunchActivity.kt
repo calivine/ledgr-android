@@ -1,5 +1,6 @@
 package com.example.ledgr
 
+import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import androidx.appcompat.app.AppCompatActivity
 import android.annotation.SuppressLint
@@ -16,6 +17,9 @@ import android.view.animation.DecelerateInterpolator
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.OnLifecycleEvent
 import com.example.ledgr.ui.login.LoginActivity
 import java.io.File
 import java.io.FileNotFoundException
@@ -125,6 +129,19 @@ class LaunchActivity : AppCompatActivity() {
             val username = userCreds[0]
             val apiKey = userCreds[2].removeSurrounding('"'.toString())
 
+            val sharedPref =
+                getSharedPreferences(getString(R.string.api_token), Context.MODE_PRIVATE)
+                    ?: return
+            val token = sharedPref.getString(getString(R.string.api_token), "")
+            val theme = sharedPref.getString(getString(R.string.theme_button), "Light")
+            if (theme == "Light") {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+            else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
+
+
             /**
             val sharedPref = getSharedPreferences(
                 getString(R.string.api_token), Context.MODE_PRIVATE)
@@ -133,21 +150,27 @@ class LaunchActivity : AppCompatActivity() {
                 putString(getString(R.string.api_token), apiKey)
                 apply()
             }
-            */
+
 
             val myIntent = Intent(this, MainActivity::class.java).apply {
                 this.putExtra("username", username)
                 this.putExtra("api", apiKey)
             }
 
+            */
+            val myIntent = Intent(this, MainActivity::class.java)
 
 
-            fullscreenContent
-            ObjectAnimator.ofFloat(fullscreenContent, "textSize", 16F, 0F).apply {
+
+            /**
+            ObjectAnimator.ofFloat(fullscreenContent, "scaleX", 16F, 0F).apply {
                 duration = 1000
                 interpolator = AnticipateInterpolator()
                 start()
-            }
+            } */
+
+
+
             /**
              * Depreciated
             myIntent.putExtra("username", username)
@@ -156,13 +179,16 @@ class LaunchActivity : AppCompatActivity() {
 
             // startActivity(myIntent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle())
             startActivity(myIntent)
+
         }
         else {
             Log.d("acaliLAUNCH", "no file")
 
             val myIntent = Intent(this, LoginActivity::class.java)
             startActivity(myIntent)
+
         }
+        finish()
 
 
         /*
@@ -245,11 +271,22 @@ class LaunchActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         Log.d("acali-LaunchActivity", "OnResume was called")
-        // launch()
-        delayedHide(100)
+        val animX = ObjectAnimator.ofFloat(fullscreenContent, "scaleX", 1F, 0F)
+        val animY = ObjectAnimator.ofFloat(fullscreenContent, "scaleY", 1F, 0F)
+        AnimatorSet().apply {
+            playTogether(animX, animY)
+            duration = 2000
+            interpolator = AnticipateInterpolator()
+            start()
+        }
 
-        launchHandler.postDelayed(launchRunnable, 1000)
+        // launch()
+        // delayedHide(100)
+
+        launchHandler.postDelayed(launchRunnable, 2000)
     }
+
+    /**
 
     override fun onPause() {
         super.onPause()
@@ -266,6 +303,7 @@ class LaunchActivity : AppCompatActivity() {
         super.onDestroy()
         Log.d("acali-LaunchActivity", "onDestroy was called")
     }
+    */
 
 
     companion object {

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.navigation.findNavController
+import androidx.navigation.navOptions
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ledgr.R
 import com.example.ledgr.data.model.BudgetCategory
@@ -153,7 +154,16 @@ class BudgetProgressListAdapter(private val mBudget: List<BudgetCategory>, priva
             // val transaction = context as AppCompatActivity
             // transaction.supportFragmentManager.beginTransaction().replace(R.id.layout_frame, targetFragment).addToBackStack(holder.category.text.toString()).commit()
 
-            holder.itemView.findNavController().navigate(R.id.action_dashboard_to_budgetDetailFragment, bundle)
+            holder.itemView.findNavController().navigate(R.id.action_dashboard_to_budgetDetailFragment, bundle, navOptions {
+                anim {
+                    enter = android.R.animator.fade_in
+                    exit = android.R.animator.fade_out
+
+                }
+
+
+
+            })
 
         }
 

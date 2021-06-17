@@ -14,7 +14,8 @@
 
         <action
             android:id="@+id/action_dashboard_to_budgetDetailFragment"
-            app:destination="@id/budgetDetailFragment">
+            app:destination="@id/budgetDetailFragment"
+            >
 
         </action>
 
@@ -32,8 +33,14 @@
             app:argType="string"
             app:nullable="true" />
         <action android:id="@+id/action_pop_out_of_details"
+            app:destination="@id/dashboard"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@id/home"
             app:popUpToInclusive="true" />
+
     </fragment>
 
 

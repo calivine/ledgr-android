@@ -10,6 +10,7 @@
         <attr name="backgroundColor" format="color" />
         <attr name="titleColor" format="color"/>
         <attr name="boxFillColor" format="color"/>
+        <attr name="exampleColor" format="color"/>
 
     </declare-styleable>
 
@@ -23,4 +24,5 @@
     <attr name="colorOnSecondaryVariant" format="reference"/>
     <attr name="colorOnSurfaceVariant" format="reference" />
     <attr name="colorIcon" format="reference" />
+
 </resources>
