@@ -16,7 +16,7 @@ class DataBuilder() {
 
         data.forEach {
             val budgetItem = it.asJsonObject
-            if (budgetItem.get("planned").asFloat > 0F) {
+            if (budgetItem.get("planned").asFloat > 0F && budgetItem.get("actual").asFloat > 0F) {
                 viewList.add(
                     BudgetCategory(
                         budgetItem.get("category").asString,

@@ -11,29 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-
-        <TextView
+        <Spinner
+            android:id="@+id/dark_mode_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/toggle_light_dark"
-            app:layout_constraintStart_toEndOf="@id/toogle_dark_mode"
-            app:layout_constraintTop_toTopOf="@id/toogle_dark_mode"
-            app:layout_constraintBottom_toBottomOf="@id/toogle_dark_mode" />
-
-
-        <Switch
-            android:id="@+id/toogle_dark_mode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="false"
-            android:textOff="@string/mode_light"
-            android:textOn="@string/mode_dark"
-            android:text="@string/mode_dark"
             app:layout_constraintBottom_toTopOf="@id/choose_theme"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="UseSwitchCompatOrMaterialXml" />
+            app:layout_constraintStart_toStartOf="parent"/>
 
 
         <Button
@@ -53,6 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/button_block_margin"
             android:text="@string/logout_text"
+            android:textColor="@color/alert"
             app:layout_constraintBottom_toTopOf="@id/version_label"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

@@ -10,6 +10,8 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.appcompat.app.AppCompatDelegate
@@ -26,7 +28,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import kotlin.math.hypot
 
-class AccountFragment : Fragment() {
+class AccountFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,13 +50,17 @@ class AccountFragment : Fragment() {
 
         val mode = sharedPref.getString(getString(R.string.theme_button), "Light")
 
-        if (mode == "Dark") {
-            toogle_dark_mode.isChecked = true
-            toogle_dark_mode.text = getString(R.string.mode_dark)
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.update_dark_mode,
+            android.R.layout.simple_spinner_item
+        ).also {
+            it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            dark_mode_spinner.adapter = it
         }
-        else {
-            toogle_dark_mode.text = getString(R.string.mode_light)
-        }
+        dark_mode_spinner.onItemSelectedListener = this
+
+
 
 
 
@@ -135,39 +141,31 @@ class AccountFragment : Fragment() {
 
 
              */
-
-
-
         }
-
-        toogle_dark_mode.setOnCheckedChangeListener { _, isChecked ->
-
-            if (isChecked) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                toogle_dark_mode.text = getString(R.string.mode_dark)
-                with (sharedPref.edit()) {
-                    putString(getString(R.string.theme_button), "Dark")
-                    apply()
-                }
-            }
-            else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-                toogle_dark_mode.text = getString(R.string.mode_light)
-                with (sharedPref.edit()) {
-                    putString(getString(R.string.theme_button), "Light")
-                    apply()
-                }
-
-            }
-        }
-
-        // back.setOnClickListener { closeSettingsWindow() }
     }
 
     private fun closeSettingsWindow() {
         choose_theme.visibility = View.VISIBLE
         logout.visibility = View.VISIBLE
         version_label.visibility = View.VISIBLE
+
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+        val selected = parent?.getItemAtPosition(position)
+        Log.d("acali", "onItemSelectedFromSpinner ${selected}")
+        when(selected) {
+            "dark" -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES) }
+            "light" -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) }
+            "system" -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) }
+        }
+
+
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        Log.d("acali", "onNothingSelected FromSpinner")
 
     }
 

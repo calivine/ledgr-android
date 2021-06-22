@@ -168,5 +168,18 @@
     <string name="theme_label_red">Red</string>
     <string name="theme_label_ledgr">Ledgr</string>
     <string name="theme_label_yellow">Yellow</string>
+    <string name="theme_label_purple">Purple</string>
 
+    <string-array name="update_dark_mode">
+        <item>Dark mode settings</item>
+        <item>dark</item>
+        <item>light</item>
+        <item>system</item>
+    </string-array>
+
+    <!-- Strings related to the Alert Dialog -->
+    <string name="notification_listener_service">"Notification Listener Service"</string>
+    <string name="notification_listener_service_explanation">"For the app. to work you need to enable the Notification Listener Service. Enable it now?"</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

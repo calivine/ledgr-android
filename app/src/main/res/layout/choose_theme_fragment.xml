@@ -82,6 +82,13 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/yellow_500" />
 
+            <Button
+                android:id="@+id/choose_list_purple"
+                style="@style/ThemeSelectButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/purple_700"
+                android:contentDescription="@string/theme_label_purple" />
 
         </TableRow>
 

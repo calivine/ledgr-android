@@ -116,7 +116,8 @@ class ChooseThemeFragment : Fragment() {
             "Secondary" to R.style.AppTheme_Secondary,
             "Ledgr" to R.style.AppTheme,
             "Red" to R.style.AppTheme_Red,
-            "Yellow" to R.style.AppTheme_Yellow
+            "Yellow" to R.style.AppTheme_Yellow,
+            "Purple" to R.style.AppTheme_Purple
         )
 
         with(sharedPref.edit()) {

@@ -1,10 +1,14 @@
 package com.example.ledgr
 
 
-import android.content.Context
+import android.content.*
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
+import android.text.TextUtils
+import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -16,6 +20,14 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var selectedFragment: Fragment
     private lateinit var navController: NavController
+
+    private val ENABLED_NOTIFICATION_LISTENERS = "enabled_notification_listeners"
+    private val ACTION_NOTIFICATION_LISTENER_SETTINGS = "android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"
+
+    private lateinit var changeBroadcastReceiver: ChangeBroadcastReceiver
+    private lateinit var enableNotificationListenerAlertDialog: AlertDialog
+
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,61 +56,62 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigationView = bottom_navigation
         bottomNavigationView.setupWithNavController(navController)
 
+        if (!isNotificationServiceEnabled()) {
+            enableNotificationListenerAlertDialog = buildNotificationServiceAlertDialog()
+            enableNotificationListenerAlertDialog.show()
+        }
 
+        changeBroadcastReceiver = ChangeBroadcastReceiver()
+        val intentFilter: IntentFilter = IntentFilter()
+        intentFilter.addAction("com.example.ledgr.spendingnotificationservice")
+        registerReceiver(changeBroadcastReceiver, intentFilter)
 
-        /**
-         * Decpreciated Navigation
-         *
-        bottom_navigation.setOnNavigationItemSelectedListener { item ->
-            when(item.itemId) {
-                R.id.transactions__view -> {
-                    selectedFragment = ViewTransactionsFragment::class.java.newInstance()
-                    // val navItem = this.findNavController(item.itemId)
+    }
 
-
-
-                }
-
-                R.id.transaction_create -> {
-                    selectedFragment = NewTransactionFragment::class.java.newInstance()
-
-                }
-
-                R.id.nav__home -> {
-                    selectedFragment = DashboardFragment::class.java.newInstance()
-
-                }
-
-                R.id.account_settings -> {
-                    selectedFragment = AccountFragment::class.java.newInstance()
+    private fun isNotificationServiceEnabled(): Boolean {
+        val packageName = packageName
+        val flat = Settings.Secure.getString(contentResolver, ENABLED_NOTIFICATION_LISTENERS)
+        if (!TextUtils.isEmpty(flat)) {
+            val names = flat.split(":")
+            for (i in 0 until names.size) {
+                val cn = ComponentName.unflattenFromString(names[i])
+                if (cn != null) {
+                    if (TextUtils.equals(packageName, cn.packageName)) {
+                        return true
+                    }
                 }
 
             }
-            selectedFragment.arguments = bundle
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.layout_frame, selectedFragment).commit()
-
-            true
-
         }
+        return false
+    }
 
-        bottom_navigation.setOnNavigationItemReselectedListener {
-
+    class ChangeBroadcastReceiver(): BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val receivedNotificationCode = intent?.getIntExtra("Notification code", -1)
+            Log.d("acali", "Main Activity ${receivedNotificationCode.toString()}")
         }
-
-        selectedFragment = DashboardFragment::class.java.newInstance()
-        selectedFragment.arguments = bundle
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.layout_frame, selectedFragment).commit()
-
-        */
 
     }
 
 
+    private fun buildNotificationServiceAlertDialog(): AlertDialog {
+        val alertDialogBuilder = AlertDialog.Builder(this)
+        alertDialogBuilder.setTitle(R.string.notification_listener_service)
+        alertDialogBuilder.setMessage(R.string.notification_listener_service_explanation)
+        alertDialogBuilder.setPositiveButton(R.string.yes, DialogInterface.OnClickListener { dialog, which ->
+            startActivity(Intent(ACTION_NOTIFICATION_LISTENER_SETTINGS))
+        })
+
+        alertDialogBuilder.setNegativeButton(R.string.no, DialogInterface.OnClickListener { dialog, which ->
+
+        })
+
+        return alertDialogBuilder.create()
+    }
 
 
-/**
+
     override fun onPause() {
         super.onPause()
         Log.d("acali-MainActivity", "onPause was called")
@@ -118,13 +131,15 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         Log.d("acali-MainActivity", "onDestroy was called")
+
+        unregisterReceiver(changeBroadcastReceiver)
     }
 
     override fun onRestart() {
         super.onRestart()
         Log.d("acali-MainActivity", "onRestart was called")
     }
-*/
+
 
 
 }

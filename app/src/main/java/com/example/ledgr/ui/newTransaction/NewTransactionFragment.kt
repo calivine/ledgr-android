@@ -304,6 +304,8 @@ class NewTransactionFragment : Fragment() {
 
     }
 
+
+
     /*
 
     private fun serializeDate(date: String): String {
