@@ -88,10 +88,13 @@ class MainActivity : AppCompatActivity() {
 
     class ChangeBroadcastReceiver(): BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
-            val receivedNotificationCode = intent?.getIntExtra("Notification code", -1)
+            Log.d("acali-MainActivity.ChangeBroadcastReceiver", "onReceive was called")
+            val receivedNotificationCode = intent?.getIntExtra("code", -1)
+            val title = intent?.getStringExtra("title")
+            val text = intent?.getStringExtra("text")
+
             Log.d("acali", "Main Activity ${receivedNotificationCode.toString()}")
         }
-
     }
 
 

@@ -12,13 +12,26 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.selection.SelectionPredicates
+import androidx.recyclerview.selection.SelectionTracker
+import androidx.recyclerview.selection.StableIdKeyProvider
+import androidx.recyclerview.selection.StorageStrategy
 import com.example.ledgr.MainActivity
 import com.example.ledgr.R
+import com.example.ledgr.adapters.BudgetCategoryPickerAdapter
+import com.example.ledgr.adapters.PickerItemLookup
+import com.example.ledgr.adapters.RecyclerViewIdKeyProvider
+import com.example.ledgr.data.DataBuilder
 import com.example.ledgr.ui.widget.date.Date
+import com.example.ledgr.viewmodels.NewTransactionViewModel
+import com.example.ledgr.viewmodels.NewTransactionViewModelFactory
 import com.google.android.material.textfield.TextInputEditText
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.koushikdutta.ion.Ion
 import kotlinx.android.synthetic.main.fragment_new_transaction.*
+import kotlinx.coroutines.selects.select
 import java.util.*
 
 
@@ -32,8 +45,16 @@ class NewTransactionFragment : Fragment() {
     var date: MutableLiveData<String> = MutableLiveData()
     private var dateDisplay = Date()
     // var amountDisplay: MutableLiveData<String> = MutableLiveData()
-    private val categoriesList = ArrayList<String>()
-    private lateinit var categoriesListAdapter : ArrayAdapter<String>
+
+
+
+    private lateinit var newTransactionViewModel: NewTransactionViewModel
+    private lateinit var dataRepository: DataBuilder
+    private lateinit var tracker: SelectionTracker<Long>
+
+    private lateinit var categoryPickerAdapter: BudgetCategoryPickerAdapter
+
+    private lateinit var chosenCategory: String
 
 
 
@@ -45,8 +66,15 @@ class NewTransactionFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_new_transaction, container, false)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        categoryPickerAdapter = BudgetCategoryPickerAdapter(requireActivity())
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+
         val dateToggle = requireActivity().findViewById<TextView>(R.id.date_toggle)
 
         //
@@ -55,7 +83,6 @@ class NewTransactionFragment : Fragment() {
         val numPad = inflater.inflate(R.layout.number_pad, number_pad_layout) as TableLayout
         val numberPad = numPad.getChildAt(0) as TableLayout
 
-        getUserBudgetCategories()
 
         transaction_button.setOnClickListener {
             transactionSubmit()
@@ -98,6 +125,72 @@ class NewTransactionFragment : Fragment() {
         val date = dateDisplay.display()
         date_label.text = date
 
+        val sharedPref =
+            activity?.getSharedPreferences(getString(R.string.api_token), Context.MODE_PRIVATE)
+                ?: return
+        val token = sharedPref.getString(getString(R.string.api_token), "")
+        val url =
+            "https://api.ledgr.site/budget?month=${Date().getCurrentMonth()}&year=${Date().getCurrentYear()}"
+
+        horizontal_category_select.adapter = categoryPickerAdapter
+
+
+        tracker = SelectionTracker.Builder<Long>("selectedItem",
+            horizontal_category_select,
+            StableIdKeyProvider(horizontal_category_select),
+            // RecyclerViewIdKeyProvider(horizontal_category_select),
+            PickerItemLookup(horizontal_category_select),
+            // StorageStrategy.createStringStorage()
+            StorageStrategy.createLongStorage()
+        ).withSelectionPredicate(
+            SelectionPredicates.createSelectAnything()
+        ).build()
+
+        categoryPickerAdapter.tracker = tracker
+
+
+        tracker.addObserver(
+            object : SelectionTracker.SelectionObserver<Long>() {
+                override fun onSelectionChanged() {
+                    super.onSelectionChanged()
+                    //tracker.selection.isEmpty
+
+                    // val selected = tracker.selection.toString()
+                    val selected = try {
+                        categoryPickerAdapter.bList[tracker.selection.last().toInt()].category.toString()
+                    } catch (e: java.util.NoSuchElementException) {
+                        ""
+                    }
+                    // val selected = categoryPickerAdapter.bList[tracker.selection.last().toInt()]
+
+                    chosenCategory = selected
+
+
+                    Log.d("acali", "Selection: ${selected}")
+
+
+                    // Log.d("acali", selected)
+                }
+            }
+        )
+
+
+
+
+        dataRepository = DataBuilder()
+
+        newTransactionViewModel = ViewModelProvider(this, NewTransactionViewModelFactory(requireActivity(), token!!.toString())).get(
+            NewTransactionViewModel::class.java
+        )
+
+        newTransactionViewModel.get(url)
+
+        newTransactionViewModel.categories.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            val budgetList: JsonArray = it as JsonArray
+            val viewList = dataRepository.budgetPickerOptions(budgetList)
+            categoryPickerAdapter.bList = viewList
+            categoryPickerAdapter.notifyDataSetChanged()
+        })
     }
 
     private fun numberPadButtonHandler(view: View) {
@@ -126,7 +219,7 @@ class NewTransactionFragment : Fragment() {
             }
         }
 
-        val toastDisplay = "$${amount_display.text} spent at ${form["desc"]?.text ?: "Nowhere"} ${categories_spinner.selectedItem} "
+        val toastDisplay = "$${amount_display.text} spent at ${form["desc"]?.text ?: "Nowhere"}"
         Toast.makeText(activity, toastDisplay, Toast.LENGTH_LONG ).show()
 
         // Format date for submitting to server
@@ -137,7 +230,7 @@ class NewTransactionFragment : Fragment() {
         json.addProperty("date", date)
         json.addProperty("amount", amount_display.text.toString())
         json.addProperty("description", form["desc"]?.text.toString())
-        json.addProperty("category", categories_spinner.selectedItem.toString())
+        json.addProperty("category", chosenCategory ?: "Misc")
 
         form.forEach {
             form[it.key]?.setText("")
@@ -226,7 +319,6 @@ class NewTransactionFragment : Fragment() {
             Log.d("acali-Observer", it)
             // date__label.text = it
         })
-
         Log.d("acaliNewTransactionFragment", "onResume was called")
     }
 
@@ -276,36 +368,6 @@ class NewTransactionFragment : Fragment() {
 
     }
 
-    private fun getUserBudgetCategories() {
-        Ion.getDefault(activity).conscryptMiddleware.enable(false)
-        Ion.with(activity)
-            .load("GET","https://ledgr.site/api/budget/categories?filter=category&api_token=LHWmiGNoaVbrgYTv7qETIVpoNkJ8H9IB1Y3Ze72voXY5Oei8Pyl7gp2Apfpw")
-            .setLogging("acali-API:", Log.INFO)
-            .asJsonObject()
-            .setCallback { ex, result ->
-                Log.i("acali-RESULT:", result["data"].toString())
-                if (ex != null) {
-                    Log.d("acali-ERROR:", ex.message.toString())
-                }
-
-                val items = result.getAsJsonArray("data")
-                for (item in items) {
-                    val category = item.asJsonObject.get("category")
-                    Log.i("acali", item.toString())
-                    categoriesList.add(category.toString().removeSurrounding("\""))
-                }
-
-                categoriesListAdapter = ArrayAdapter(requireActivity(), android.R.layout.simple_spinner_dropdown_item, categoriesList)
-
-                categories_spinner?.adapter = categoriesListAdapter
-
-
-            }
-
-    }
-
-
-
     /*
 
     private fun serializeDate(date: String): String {
@@ -330,8 +392,5 @@ class NewTransactionFragment : Fragment() {
     }
 
      */
-
-
-
 }
 

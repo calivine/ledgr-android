@@ -3,13 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/list_margin"
+    android:background="@drawable/category_picker"
+    >
+
 
     <ImageButton
-        android:id="@+id/budget_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/budget_picker_icon"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:src="@drawable/atm"
         android:contentDescription="@string/transaction_category"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,13 +23,15 @@
          />
 
     <TextView
-        android:id="@+id/budget_label"
-        android:layout_width="wrap_content"
+        android:id="@+id/budget_picker_label"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textAlignment="center"
         android:text="@string/transaction_category"
+        android:minWidth="64dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/budget_icon"/>
+        app:layout_constraintTop_toBottomOf="@id/budget_picker_icon"/>
 
 
 

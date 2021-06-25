@@ -1,5 +1,6 @@
 package com.example.ledgr.ui.widget.date
 
+import android.os.Build
 import android.util.Log
 import java.time.Instant
 import java.time.ZoneId
@@ -12,8 +13,16 @@ class Date() {
     val day = currentInstant.get(Calendar.DAY_OF_MONTH)
     val month = currentInstant.get(Calendar.MONTH)
     private val monthDisplayName = currentInstant.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.ROOT)!!.toString()
-    private val zdt: ZonedDateTime =
+
+    private val zdt = if (Build.VERSION.SDK_INT >= 26)
+    {
         ZonedDateTime.ofInstant(Instant.now(), ZoneId.of("America/Montreal"))
+    }
+    else
+    {
+        TimeZone.getTimeZone("America/Montreal")
+    }
+
 
     fun getCompleteDate(date: String):String {
         Log.d("acaligetCompleteDate:", date)
@@ -45,12 +54,24 @@ class Date() {
     }
 
     fun getCurrentMonth(): String {
+        return if (Build.VERSION.SDK_INT >= 26) {
+            zdt as ZonedDateTime
+            zdt.month.toString().toLowerCase(Locale.ROOT).capitalize(Locale.ROOT)
+        } else {
+            // zdt as TimeZone
+            monthDisplayName
+        }
 
-        return zdt.month.toString().toLowerCase(Locale.ROOT).capitalize(Locale.ROOT)
+
     }
 
     fun getCurrentYear(): String {
-        return zdt.year.toString()
+        return if (Build.VERSION.SDK_INT >= 26) {
+            zdt as ZonedDateTime
+            zdt.year.toString()
+        } else {
+            year.toString()
+        }
     }
 
 

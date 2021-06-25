@@ -116,7 +116,7 @@ open class LedgrDataSource(activity: Context, token: String?) {
          */
     }
 
-    fun getData(url: String) {
+    fun getDataFromUrl(url: String) {
         Ion.with(_activity)
             .load(url)
             .setHeader("authorization", bearer)

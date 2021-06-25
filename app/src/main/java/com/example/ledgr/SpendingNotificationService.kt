@@ -13,8 +13,8 @@ class SpendingNotificationService : NotificationListenerService() {
     private val binder = LocalBinder()
 
     inner class LocalBinder : Binder() {
-        // Return this instance of LocalService so clients can call public methods
-        fun getService(): SpendingNotificationService = this@SpendingNotificationService
+    // Return this instance of LocalService so clients can call public methods
+    fun getService(): SpendingNotificationService = this@SpendingNotificationService
 
     } */
 
@@ -29,43 +29,73 @@ class SpendingNotificationService : NotificationListenerService() {
 
     /**
     override fun onBind(intent: Intent): IBinder {
-        Log.d("acali", "SpendingNotificationService - onBind")
-        val an = activeNotifications
-        return binder
+    Log.d("acali", "SpendingNotificationService - onBind")
+    val an = activeNotifications
+    return binder
     }
-    */
+     */
 
     override fun onListenerConnected() {
         super.onListenerConnected()
         Log.d("acali", "SpendingNotificationService - onListenerConnected")
         val an = activeNotifications
-
-
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification?, rankingMap: RankingMap?) {
         super.onNotificationPosted(sbn, rankingMap)
-        val notificationCode = sbn?.let { matchNotificationCode(it) }
         Log.d("acali", "SpendingNotificationService - onNotificationPosted")
+        val notificationCode = sbn?.let { matchNotificationCode(it) }
+
         if (notificationCode != InterceptedNotificationCode().OTHER_NOTIFICATIONS_CODE) {
-            val notificationIntent = Intent("com.example.ledgr.spendingnotificationservice")
-            notificationIntent.putExtra("Notification code", notificationCode)
+            val notificationIntent =
+                Intent("com.example.ledgr.spendingnotificationservice")
+            // notificationIntent.putExtra("Notification code", notificationCode)
+            notificationIntent.apply {
+                this.putExtra("code", notificationCode)
+                this.putExtra(
+                    "title",
+                    sbn?.notification?.extras?.getString("android.title")
+                )
+                this.putExtra(
+                    "text",
+                    sbn?.notification?.extras?.getCharSequence("android.text").toString()
+                )
+            }
             sendBroadcast(notificationIntent)
         }
     }
 
 
-
-
     override fun onNotificationRemoved(sbn: StatusBarNotification) {
+        super.onNotificationRemoved(sbn)
+        Log.d("acali", "SpendingNotificationService - onNotificationRemoved")
+        // Get the code for StatusBarNotification that was removed.
         val notificationCode = matchNotificationCode(sbn)
+
+        // Let's check if this Notification is the one we're looking for...
         if (notificationCode != InterceptedNotificationCode().OTHER_NOTIFICATIONS_CODE) {
-            val activeNotifications = emptyArray<StatusBarNotification>()
+            // val activeNotifications = emptyArray<StatusBarNotification>()
+            // If there are active Notifications
             if (activeNotifications.isNotEmpty()) {
                 for (i in activeNotifications.indices) {
+                    // Check if code from list of active Notifications
+                        // matches the one that was just removed.
                     if (notificationCode == matchNotificationCode(activeNotifications[i])) {
-                        val notificationIntent = Intent("com.example.ledgr.spendingnotificationservice")
-                        notificationIntent.putExtra("Notification code", notificationCode)
+                        // Make an Intent to broadcast back to listener in MainActivity.
+                        val notificationIntent =
+                            Intent("com.example.ledgr.spendingnotificationservice")
+                        // notificationIntent.putExtra("Notification code", notificationCode)
+                        notificationIntent.apply {
+                            this.putExtra("code", notificationCode)
+                            this.putExtra(
+                                "title",
+                                sbn.notification.extras.getString("android.title")
+                            )
+                            this.putExtra(
+                                "text",
+                                sbn.notification.extras.getCharSequence("android.text").toString()
+                            )
+                        }
                         sendBroadcast(notificationIntent)
                         break
                     }
@@ -74,15 +104,13 @@ class SpendingNotificationService : NotificationListenerService() {
         }
     }
 
-    private fun matchNotificationCode(sbn: StatusBarNotification) : Int {
+    private fun matchNotificationCode(sbn: StatusBarNotification): Int {
         val packageName: String = sbn.packageName
-        val key = sbn.key
-        if (packageName == ApplicationPackageNames().CAPITAL_ONE) {
-            return InterceptedNotificationCode().CAPITAL_ONE_CODE
 
-        }
-        else {
-            return InterceptedNotificationCode().OTHER_NOTIFICATIONS_CODE
+        return if (packageName == ApplicationPackageNames().CAPITAL_ONE) {
+            InterceptedNotificationCode().CAPITAL_ONE_CODE
+        } else {
+            InterceptedNotificationCode().OTHER_NOTIFICATIONS_CODE
         }
     }
 

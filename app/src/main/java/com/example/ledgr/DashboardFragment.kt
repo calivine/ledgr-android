@@ -36,15 +36,9 @@ import kotlin.math.round
  * create an instance of this fragment.
  */
 class DashboardFragment : Fragment() {
-    // var spending: MutableLiveData<Any> = MutableLiveData()
-    // var budget: MutableLiveData<Any> = MutableLiveData()
-
-    // private val budgetList = ArrayList<Map<String, String>>()
-    // private lateinit var budgetListAdapter: ArrayAdapter<String>
 
     private lateinit var dashboardViewModel: DashboardViewModel
     private lateinit var dataRepository: DataBuilder
-    //private lateinit var dashboardViewModelFactory: DashboardViewModelFactory
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,14 +51,6 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("acaliDASHBOARD_FRAGMENT", "onViewCreated was called")
-
-    }
-
-    @SuppressLint("SetTextI18n")
-    override fun onResume() {
-        super.onResume()
-
-        Log.d("acaliDASHBOARD_FRAGMENT:", "onResume was called")
 
         // Spending by categories ListView
         // val budgetlist = activity?.findViewById<ListView>(R.id.budget_list)
@@ -95,57 +81,9 @@ class DashboardFragment : Fragment() {
             val budgetList: JsonArray = it as JsonArray
             val viewList = dataRepository.budgetListForView(budgetList)
 
-            /**
-            val viewList: ArrayList<BudgetCategory> = ArrayList()
-
-            budgetList.forEach {
-            val budgetItem = it.asJsonObject
-            if (budgetItem.get("planned").asFloat > 0F) {
-            viewList.add(
-            BudgetCategory(
-            budgetItem.get("category").asString,
-            budgetItem.get("planned").asFloat,
-            budgetItem.get("actual").asFloat,
-            budgetItem.get("icon").asString,
-            )
-            )
-            }
-            }
-            /**
-
-            for (budgetItem in budgetList) {
-            val budget = BudgetCategory(
-            budgetItem.asJsonObject.get("category").asString,
-            budgetItem.asJsonObject.get("planned").asFloat,
-            budgetItem.asJsonObject.get("actual").asFloat
-            )
-            Log.i("acali-dashboardViewModel.budget.observe", budget.toString())
-            viewList.add(budget)
-            val key = budgetItem.asJsonObject.get("period").asString
-            if (budgetPeriodSet.containsKey(key)) {
-            val tempValue = budgetPeriodSet.get(key)
-            if (tempValue != null) {
-            budgetPeriodSet[key] =
-            tempValue + budgetItem.asJsonObject.get("actual").asFloat
-            }
-            } else {
-            budgetPeriodSet[key] = budgetItem.asJsonObject.get("actual").asFloat
-            }
-
-            }
-            */
-             */
-            /**
-            val budgetListAdapter = BudgetProgressListAdapter(
-                requireActivity(),
-                viewList
-            )
-            */
             val budgetListAdapter = BudgetProgressListAdapter(viewList, requireActivity())
             // budget_list.adapter = budgetListAdapter
             budget_list_recycler.adapter = budgetListAdapter
-
-
             // budgetlist?.adapter = budgetListAdapter
         })
 
@@ -171,13 +109,18 @@ class DashboardFragment : Fragment() {
             val display = "$${roundedTotal}"
             // spendingDisplay?.setFormattedText(display)
             spending_display.setFormattedText(display)
-
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("acaliDASHBOARD_FRAGMENT", "onResume was called")
     }
 
     override fun onStart() {
         super.onStart()
         Log.d("acaliDASHBOARD_FRAGMENT", "onStart was called")
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

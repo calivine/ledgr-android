@@ -20,7 +20,7 @@ class DashboardViewModel(val dataSource: LedgrDataSource) : ViewModel() {
     }
 
     fun get(url: String) {
-        dataSource.getData(url)
+        dataSource.getDataFromUrl(url)
     }
 
     override fun onCleared() {

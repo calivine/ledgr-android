@@ -12,7 +12,7 @@ class TransactionsViewModel(val dataSource: LedgrDataSource) : ViewModel() {
     val transactions: LiveData<Any> get() = _transactions
 
     fun get(url: String) {
-        dataSource.getData(url)
+        dataSource.getDataFromUrl(url)
     }
 
 }
