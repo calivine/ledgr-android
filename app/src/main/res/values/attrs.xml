@@ -24,5 +24,6 @@
     <attr name="colorOnSecondaryVariant" format="reference"/>
     <attr name="colorOnSurfaceVariant" format="reference" />
     <attr name="colorIcon" format="reference" />
+    <attr name="colorBackground" format="reference" />
 
 </resources>

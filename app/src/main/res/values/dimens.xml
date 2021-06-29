@@ -14,4 +14,6 @@
 
     <dimen name="list_vertical_margin">8dp</dimen>
 
+    <dimen name="progress_bar_height">75dp</dimen>
+
 </resources>

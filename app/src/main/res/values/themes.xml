@@ -10,6 +10,7 @@
         <item name="colorSecondaryVariant">@color/ledgr_secondary</item>
 
         <item name="android:colorBackground">@color/light_grey_200</item>
+        <item name="colorBackground">@color/light_grey_200</item>
         <item name="colorAccent">@color/material_accent_red</item>
         <item name="colorSurface">@color/white</item>
         <item name="colorBar">@color/light_grey_200</item>

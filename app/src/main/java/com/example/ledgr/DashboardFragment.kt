@@ -10,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
+import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.android.volley.Request
@@ -24,8 +26,10 @@ import com.example.ledgr.viewmodels.DashboardViewModelFactory
 import com.google.gson.JsonArray
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.budget_item.view.*
+import kotlinx.android.synthetic.main.budget_progress_bar.*
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 import kotlinx.android.synthetic.main.fragment_new_transaction.*
+import kotlinx.android.synthetic.main.notification_card.*
 
 import java.util.*
 import kotlin.math.round
@@ -63,6 +67,24 @@ class DashboardFragment : Fragment() {
         val token = sharedPref.getString(getString(R.string.api_token), "")
         val url =
             "https://api.ledgr.site/budget?month=${Date().getCurrentMonth()}&year=${Date().getCurrentYear()}"
+
+        val notifications = sharedPref.getString(getString(R.string.notifications), "empty")
+
+        val notifications_text = sharedPref.getString(notifications, "")
+
+        if (notifications != "empty") {
+            new_spending_layout.visibility = View.VISIBLE
+            new_spending_layout.getChildAt(0).visibility = View.VISIBLE
+            new_spending_layout.getChildAt(1).visibility = View.VISIBLE
+
+            val newCard = CardView(requireContext())
+            newCard.id = R.id.new_transaction_card
+            val cardText = TextView(context)
+            dashboard_layout.addView(newCard)
+
+
+            // newCard.addView(cardText)
+        }
 
 
         dataRepository = DataBuilder()

@@ -1,6 +1,7 @@
 package com.example.ledgr
 
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
@@ -50,17 +51,24 @@ class SpendingNotificationService : NotificationListenerService() {
             val notificationIntent =
                 Intent("com.example.ledgr.spendingnotificationservice")
             // notificationIntent.putExtra("Notification code", notificationCode)
+            val title = sbn?.notification?.extras?.getString("android.title")
+            val text = sbn?.notification?.extras?.getCharSequence("android.text").toString()
             notificationIntent.apply {
                 this.putExtra("code", notificationCode)
                 this.putExtra(
                     "title",
-                    sbn?.notification?.extras?.getString("android.title")
+                    title
                 )
                 this.putExtra(
                     "text",
-                    sbn?.notification?.extras?.getCharSequence("android.text").toString()
+                    text
                 )
             }
+            val sharedPref =
+                getSharedPreferences(getString(R.string.api_token), Context.MODE_PRIVATE)
+                    ?: return
+            sharedPref.edit().putString(getString(R.string.notifications), title).apply()
+            sharedPref.edit().putString(title, text).apply()
             sendBroadcast(notificationIntent)
         }
     }
@@ -73,34 +81,31 @@ class SpendingNotificationService : NotificationListenerService() {
         val notificationCode = matchNotificationCode(sbn)
 
         // Let's check if this Notification is the one we're looking for...
-        if (notificationCode != InterceptedNotificationCode().OTHER_NOTIFICATIONS_CODE) {
+        if (notificationCode == InterceptedNotificationCode().OTHER_NOTIFICATIONS_CODE) {
             // val activeNotifications = emptyArray<StatusBarNotification>()
             // If there are active Notifications
-            if (activeNotifications.isNotEmpty()) {
-                for (i in activeNotifications.indices) {
-                    // Check if code from list of active Notifications
-                        // matches the one that was just removed.
-                    if (notificationCode == matchNotificationCode(activeNotifications[i])) {
-                        // Make an Intent to broadcast back to listener in MainActivity.
-                        val notificationIntent =
-                            Intent("com.example.ledgr.spendingnotificationservice")
-                        // notificationIntent.putExtra("Notification code", notificationCode)
-                        notificationIntent.apply {
-                            this.putExtra("code", notificationCode)
-                            this.putExtra(
-                                "title",
-                                sbn.notification.extras.getString("android.title")
-                            )
-                            this.putExtra(
-                                "text",
-                                sbn.notification.extras.getCharSequence("android.text").toString()
-                            )
-                        }
-                        sendBroadcast(notificationIntent)
-                        break
-                    }
-                }
+            val notificationIntent =
+                Intent("com.example.ledgr.spendingnotificationservice")
+            // notificationIntent.putExtra("Notification code", notificationCode)
+            val title = sbn?.notification?.extras?.getString("android.title")
+            val text = sbn?.notification?.extras?.getCharSequence("android.text").toString()
+            notificationIntent.apply {
+                this.putExtra("code", notificationCode)
+                this.putExtra(
+                    "title",
+                    sbn.notification.extras.getString("android.title")
+                )
+                this.putExtra(
+                    "text",
+                    sbn.notification.extras.getCharSequence("android.text").toString()
+                )
             }
+            val sharedPref =
+                getSharedPreferences(getString(R.string.api_token), Context.MODE_PRIVATE)
+                    ?: return
+            sharedPref.edit().putString(getString(R.string.notifications), title).apply()
+            sharedPref.edit().putString(title, text).apply()
+            sendBroadcast(notificationIntent)
         }
     }
 

@@ -1,6 +1,7 @@
 package com.example.ledgr
 
 
+import android.app.Activity
 import android.content.*
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
@@ -8,12 +9,17 @@ import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
+import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_dashboard.*
+import kotlinx.android.synthetic.main.notification_card.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -39,6 +45,7 @@ class MainActivity : AppCompatActivity() {
         val theme = sharedPref.getInt(getString(R.string.current_theme), R.style.AppTheme)
         setTheme(theme)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(findViewById(R.id.main_toolbar))
 
 
         /**
@@ -65,6 +72,8 @@ class MainActivity : AppCompatActivity() {
         val intentFilter: IntentFilter = IntentFilter()
         intentFilter.addAction("com.example.ledgr.spendingnotificationservice")
         registerReceiver(changeBroadcastReceiver, intentFilter)
+
+
 
     }
 
@@ -93,8 +102,36 @@ class MainActivity : AppCompatActivity() {
             val title = intent?.getStringExtra("title")
             val text = intent?.getStringExtra("text")
 
-            Log.d("acali", "Main Activity ${receivedNotificationCode.toString()}")
+            Log.d("acali", "Main Activity ${receivedNotificationCode.toString()} $title $text")
+
+
+            context as Activity
+            // val newCard = CardView(context)
+            // val cardText = TextView(context)
+            // cardText.text = text
+
+            // newCard.addView(cardText)
+
+            // context.recent_purchases.text = text
+            // context.new_spending_layout.addView(newCard)
+            context.new_spending_layout.visibility = View.VISIBLE
+            context.new_spending_layout.getChildAt(0).visibility = View.VISIBLE
+            context.new_spending_layout.getChildAt(1).visibility = View.VISIBLE
+            // context.recent_purchases.visibility = View.VISIBLE
         }
+
+
+
+    }
+
+    override fun onUserInteraction() {
+        super.onUserInteraction()
+        Log.d("acali", "onUserInteraction")
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        Log.d("acali", "onNewIntent $intent")
     }
 
 
