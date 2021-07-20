@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import android.widget.*
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
@@ -30,6 +31,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.koushikdutta.ion.Ion
+import kotlinx.android.synthetic.main.bottom_navigation.*
 import kotlinx.android.synthetic.main.fragment_new_transaction.*
 import kotlinx.coroutines.selects.select
 import java.util.*
@@ -68,7 +70,10 @@ class NewTransactionFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         categoryPickerAdapter = BudgetCategoryPickerAdapter(requireActivity())
+        // requireActivity().requestWindowFeature(Window.FEATURE_NO_TITLE)
+        // bottom_navigation?.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -161,6 +166,7 @@ class NewTransactionFragment : Fragment() {
                     } catch (e: java.util.NoSuchElementException) {
                         ""
                     }
+
                     // val selected = categoryPickerAdapter.bList[tracker.selection.last().toInt()]
 
                     chosenCategory = selected
@@ -186,7 +192,7 @@ class NewTransactionFragment : Fragment() {
         newTransactionViewModel.get(url)
 
         newTransactionViewModel.categories.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            val budgetList: JsonArray = it as JsonArray
+            val budgetList: JsonArray = (it as JsonObject).getAsJsonArray("budget")
             val viewList = dataRepository.budgetPickerOptions(budgetList)
             categoryPickerAdapter.bList = viewList
             categoryPickerAdapter.notifyDataSetChanged()

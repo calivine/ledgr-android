@@ -1,13 +1,13 @@
 package com.example.ledgr
 
-import android.app.Service
+
 import android.content.Context
-import android.content.Intent
-import android.os.Binder
-import android.os.IBinder
+
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
+import com.example.ledgr.data.LedgrDataSource
+import com.google.gson.JsonObject
 
 class SpendingNotificationService : NotificationListenerService() {
     /**
@@ -39,7 +39,7 @@ class SpendingNotificationService : NotificationListenerService() {
     override fun onListenerConnected() {
         super.onListenerConnected()
         Log.d("acali", "SpendingNotificationService - onListenerConnected")
-        val an = activeNotifications
+
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification?, rankingMap: RankingMap?) {
@@ -48,11 +48,13 @@ class SpendingNotificationService : NotificationListenerService() {
         val notificationCode = sbn?.let { matchNotificationCode(it) }
 
         if (notificationCode != InterceptedNotificationCode().OTHER_NOTIFICATIONS_CODE) {
+            /**
             val notificationIntent =
                 Intent("com.example.ledgr.spendingnotificationservice")
             // notificationIntent.putExtra("Notification code", notificationCode)
             val title = sbn?.notification?.extras?.getString("android.title")
             val text = sbn?.notification?.extras?.getCharSequence("android.text").toString()
+            // val date = Date().today()
             notificationIntent.apply {
                 this.putExtra("code", notificationCode)
                 this.putExtra(
@@ -63,13 +65,22 @@ class SpendingNotificationService : NotificationListenerService() {
                     "text",
                     text
                 )
+                // this.putExtra("date", date)
             }
+            sendBroadcast(notificationIntent)
+            */
+            val text = sbn?.notification?.extras?.getCharSequence("android.text").toString()
+
+            val requestBody: JsonObject = JsonObject()
+            requestBody.addProperty("text", text)
+
             val sharedPref =
                 getSharedPreferences(getString(R.string.api_token), Context.MODE_PRIVATE)
                     ?: return
-            sharedPref.edit().putString(getString(R.string.notifications), title).apply()
-            sharedPref.edit().putString(title, text).apply()
-            sendBroadcast(notificationIntent)
+            val token = sharedPref.getString(getString(R.string.api_token), "")
+            Log.d("acali", "Saving to Server")
+            val response = LedgrDataSource(applicationContext, token).post("https://api.ledgr.site/transactions/pending", requestBody)
+            Log.d("acali", response.toString())
         }
     }
 
@@ -77,11 +88,13 @@ class SpendingNotificationService : NotificationListenerService() {
     override fun onNotificationRemoved(sbn: StatusBarNotification) {
         super.onNotificationRemoved(sbn)
         Log.d("acali", "SpendingNotificationService - onNotificationRemoved")
+
+        /**
         // Get the code for StatusBarNotification that was removed.
         val notificationCode = matchNotificationCode(sbn)
 
         // Let's check if this Notification is the one we're looking for...
-        if (notificationCode == InterceptedNotificationCode().OTHER_NOTIFICATIONS_CODE) {
+        if (notificationCode != InterceptedNotificationCode().OTHER_NOTIFICATIONS_CODE) {
             // val activeNotifications = emptyArray<StatusBarNotification>()
             // If there are active Notifications
             val notificationIntent =
@@ -100,13 +113,10 @@ class SpendingNotificationService : NotificationListenerService() {
                     sbn.notification.extras.getCharSequence("android.text").toString()
                 )
             }
-            val sharedPref =
-                getSharedPreferences(getString(R.string.api_token), Context.MODE_PRIVATE)
-                    ?: return
-            sharedPref.edit().putString(getString(R.string.notifications), title).apply()
-            sharedPref.edit().putString(title, text).apply()
+
             sendBroadcast(notificationIntent)
         }
+        */
     }
 
     private fun matchNotificationCode(sbn: StatusBarNotification): Int {

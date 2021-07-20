@@ -1,6 +1,7 @@
 package com.example.ledgr.ui.budget
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,8 +17,6 @@ import com.example.ledgr.ui.widget.date.Date
 import com.example.ledgr.ui.widget.LineChart
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
-import kotlinx.android.synthetic.main.activity_budget_details.*
-import kotlinx.android.synthetic.main.activity_budget_details.details_chart
 import kotlinx.android.synthetic.main.fragment_budget_detail.*
 
 
@@ -53,6 +52,11 @@ class BudgetDetailFragment : Fragment() {
 
         val target = arguments?.getString("category")
         //val bundle = arguments
+        Log.d("acali", "BudgetDetailsFragment $target")
+
+        val encodedTarget = target?.replace(" ", "+")
+
+        Log.d("acali","BudgetDetailsFragment $encodedTarget")
 
 
         val transactionsListView = requireActivity().findViewById<ListView>(R.id.budget_details_list)
@@ -61,7 +65,7 @@ class BudgetDetailFragment : Fragment() {
         budgetDetailsViewModel = ViewModelProvider(this, BudgetDetailsViewModelFactory(requireActivity(), token!!.toString())).get(
             BudgetDetailsViewModel::class.java)
 
-        val url = "https://api.ledgr.site/transactions?category=${target}"
+        val url = "https://api.ledgr.site/transactions?category=${encodedTarget}"
         budgetDetailsViewModel.get(url)
 
         val budget_detail_label = requireActivity().findViewById<TextView>(R.id.budget_detail_category)

@@ -91,7 +91,7 @@
         android:layout_gravity="center"
         android:text="@string/transaction_button"
         android:layout_marginBottom="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="@id/number_pad_layout"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

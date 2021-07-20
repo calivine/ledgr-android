@@ -23,8 +23,8 @@ android {
         applicationId "com.example.ledgr"
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode 4
-        versionName "0.0.4"
+        versionCode 5
+        versionName "0.0.5"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures {
@@ -34,6 +34,23 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main {
+            res.srcDirs =
+                    [
+                            'src/main/res/layouts/dashboard',
+                            'src/main/res/layouts/details',
+                            'src/main/res/layouts/launcher',
+                            'src/main/res/layouts/layout',
+                            'src/main/res/layouts/new_transaction',
+                            'src/main/res/layouts/settings',
+                            'src/main/res/layouts/user_login',
+                            'src/main/res/layouts',
+                            'src/main/res'
+
+                    ]
         }
     }
     compileOptions {

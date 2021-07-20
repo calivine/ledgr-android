@@ -127,7 +127,7 @@ open class LedgrDataSource(activity: Context, token: String?) {
                     Log.i("acali", ex.message)
                 } else if (result != null) {
                     // Log.i("acali", result.getAsJsonArray("data").toString())
-                    _liveData.value = result.getAsJsonArray("data")
+                    _liveData.value = result.get("data")
                 }
 
             }

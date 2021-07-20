@@ -63,19 +63,20 @@ class AccountFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
 
 
-
+        // Get an instance of package-related info
         val packageInfo = context?.packageManager?.getPackageInfo(context?.packageName.toString(), 0)
-        val versionText = if (Build.VERSION.SDK_INT >= 28)
-        {
+
+        // Version-specific text
+        version_label.text = if (Build.VERSION.SDK_INT >= 28) {
             "App Version: ${packageInfo?.versionName} (${packageInfo?.longVersionCode})"
         }
-        else
-        {
+        else {
             "App Version: ${packageInfo?.versionName}"
         }
 
-        version_label.text = versionText
+        // version_label.text = versionText
 
+        // Delete remember user file and log out
         logout.setOnClickListener {
             // .getFilesDir().getPath()
 

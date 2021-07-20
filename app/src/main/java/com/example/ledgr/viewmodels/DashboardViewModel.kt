@@ -15,6 +15,10 @@ class DashboardViewModel(val dataSource: LedgrDataSource) : ViewModel() {
     private val _budget = dataSource.connect()
     val budget: LiveData<Any> get() = _budget
 
+    private val _pending = dataSource.connect()
+    val pendingTransactions: LiveData<Any> get() = _pending
+
+
     init {
         // _spending.value = 0.0
     }
@@ -27,6 +31,8 @@ class DashboardViewModel(val dataSource: LedgrDataSource) : ViewModel() {
         super.onCleared()
         Log.d("acali-DashboardViewModel", "onCleared was called")
     }
+
+
 }
 
 class DashboardViewModelFactory(private val context: Context, private val token: String?) : ViewModelProvider.Factory {

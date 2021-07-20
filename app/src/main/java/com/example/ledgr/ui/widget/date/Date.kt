@@ -74,6 +74,21 @@ class Date() {
         }
     }
 
+    fun today(): String {
+        val dMonth = if (month < 10) {
+            "0$month"
+        } else {
+            "$month"
+        }
+
+        val dDay = if (day < 10) {
+            "0$day"
+        } else {
+            "$day"
+        }
+        return "$year-$dMonth-$dDay"
+    }
+
 
 
 
