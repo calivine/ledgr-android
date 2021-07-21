@@ -1,35 +1,30 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        app:key="theme_category"
+        app:title="@string/theme_category"
+        app:summary="@string/theme_category_summary"
+        >
 
-    <PreferenceCategory app:title="@string/messages_header">
-
-        <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
+        <DropDownPreference
+            app:key="darkmode"
+            app:title="Dark mode"
+            app:entries="@array/dark_mode"
+            app:entryValues="@array/dark_mode"/>
 
         <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="@string/reply_title"
-            app:useSimpleSummaryProvider="true" />
+            app:key="theme"
+            app:title="Theme"
+            app:entries="@array/theme_colors"
+            app:entryValues="@array/theme_values" />
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/sync_header">
-
-        <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
-
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
+    <PreferenceCategory
+        app:key="account_category"
+        app:title="Accounts">
 
     </PreferenceCategory>
+
+
 
 </PreferenceScreen>

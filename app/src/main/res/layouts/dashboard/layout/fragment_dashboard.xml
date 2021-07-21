@@ -1,54 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".DashboardFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/dashboard_layout"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <include
-            android:id="@+id/budget_progress_bar_container"
-            layout="@layout/budget_progress_bar"
+        android:layout_height="match_parent" >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/dashboard_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/pending_transaction_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="25dp"
-            android:paddingBottom="25dp"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            <include
+                android:id="@+id/budget_progress_bar_container"
+                layout="@layout/budget_progress_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-            app:layout_constraintTop_toBottomOf="@id/budget_progress_bar_container"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/pending_transaction_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:paddingBottom="25dp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
 
-
-        <include
-            android:id="@+id/budget_list_container"
-            layout="@layout/budget_list_container" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/new_transaction_FAB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_add_circle_24"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="16dp"
-            android:contentDescription="@string/app_name"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBaseline_toBaselineOf="@id/dashboard_layout"
-
-            />
+                app:layout_constraintTop_toBottomOf="@id/budget_progress_bar_container"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <include
+                android:id="@+id/budget_list_container"
+                layout="@layout/budget_list_container" />
 
-</androidx.core.widget.NestedScrollView>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/new_transaction_FAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_add_circle_24"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,4 +9,32 @@
         <item>reply</item>
         <item>reply_all</item>
     </string-array>
+
+    <string-array name="dark_mode">
+        <item>Dark mode settings</item>
+        <item>dark</item>
+        <item>light</item>
+        <item>system</item>
+    </string-array>
+
+    <string-array name="theme_colors">
+        <item>Ledgr</item>
+        <item>Secondary</item>
+        <item>Purple</item>
+        <item>Red</item>
+        <item>Yellow</item>
+
+    </string-array>
+
+    <array name="theme_values">
+        <item>AppTheme</item>
+        <item>AppTheme.Secondary</item>
+        <item>AppTheme.Purple</item>
+        <item>AppTheme.Red</item>
+        <item>AppTheme.Yellow</item>
+
+    </array>
+
+
+
 </resources>

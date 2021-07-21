@@ -30,12 +30,16 @@ import kotlin.math.hypot
 
 class AccountFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
+    companion object {
+        const val TAG = "acali Account Fragment"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d("acaliAccount_FRAGMENT", "onCreateView was called")
+        Log.d(TAG, "onCreateView was called")
         return inflater.inflate(R.layout.fragment_account, container, false)
     }
 

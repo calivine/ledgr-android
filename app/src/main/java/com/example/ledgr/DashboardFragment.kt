@@ -321,7 +321,7 @@ class DashboardFragment : Fragment(), PendingTransactionsAdapter.PendingDialogLi
     }
 
     fun removeFromAdapter(position: Int) {
-        Log.d("acali", "RemovedTest")
+        Log.d("acali", "Removing at $position")
         pendingTransactionsAdapter.deleteItem(position)
     }
 

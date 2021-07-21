@@ -30,7 +30,7 @@
         <item name="colorOnBar">@color/black</item>
     </style>
 
-    <style name="AppTheme.Purple" parent="AppTheme">
+    <style name="AppTheme.Purplek" parent="AppTheme">
         <item name="colorIcon">@color/green_500</item>
         <item name="colorPrimary">@color/green_500_light</item>
         <item name="colorSecondary">@color/green_500_dark</item>

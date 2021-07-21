@@ -104,5 +104,8 @@
 
     <string name="dialog_title">Choose a Category</string>
 
+    <string name="theme_category_summary">Dark mode settings and App Theme</string>
+    <string name="theme_category">Display</string>
+
 
 </resources>

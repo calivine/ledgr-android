@@ -119,7 +119,7 @@ class ChooseThemeFragment : Fragment() {
             "Yellow" to R.style.AppTheme_Yellow,
             "Purple" to R.style.AppTheme_Purple
         )
-
+        // Save New Theme to SharedPreferences
         with(sharedPref.edit()) {
             themes[chosenTheme]?.let {
                 putInt(getString(R.string.current_theme), it)

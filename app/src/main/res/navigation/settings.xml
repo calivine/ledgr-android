@@ -8,9 +8,8 @@
 
     <fragment
         android:id="@+id/account_settings"
-        android:name="com.example.ledgr.AccountFragment"
+        android:name="com.example.ledgr.SettingsFragment"
         android:label="@string/nav_settings"
-        tools:layout="@layout/fragment_account"
         >
         <action
             android:id="@+id/action_account_settings_to_theme_settings"

@@ -47,6 +47,8 @@ class PendingTransactionsAdapter(context: Activity) :
 
         private const val IC_EXPANDED_ROTATION_DEG = 0F
         private const val IC_COLLAPSED_ROTATION_DEG = 180F
+
+        const val TAG = "acali PendingTransactions Adapter"
     }
 
     var isExpanded: Boolean by Delegates.observable(true) { _: KProperty<*>, _: Boolean, newExpandedValue: Boolean ->
@@ -107,8 +109,8 @@ class PendingTransactionsAdapter(context: Activity) :
         when (holder) {
             is ViewHolder.ItemVH -> {
                 val pendingTransaction = pendingList.transactions[position - 1]
-                Log.d("acaliPendingTransactionsAdapter", "Position: $position")
-                holder.bind(pendingTransaction, position, listener)
+                Log.d(TAG, "Position: $position")
+                holder.bind(pendingTransaction, position-1, listener)
             }
             is ViewHolder.HeaderVH -> {
                 val pSize = pendingList.transactions.size
