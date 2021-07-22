@@ -3,6 +3,7 @@ package com.example.ledgr
 
 import android.app.Activity
 import android.content.*
+import android.content.res.Configuration
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,6 +13,7 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -43,7 +45,7 @@ class MainActivity : AppCompatActivity(), ApproveTransactionDialog.ApproveTransa
     private lateinit var sharedPreferences: SharedPreferences
 
     companion object {
-        const val TAG = "acali MainActivity"
+        const val TAG = "acali Main Activity"
     }
 
 
@@ -59,9 +61,11 @@ class MainActivity : AppCompatActivity(), ApproveTransactionDialog.ApproveTransa
 
 
         }
+        val darkMode = sharedPreferences.getString("darkmode", "system")
         val prefTheme = PreferenceManager.getDefaultSharedPreferences(this).getString("theme", "AppTheme")
 
         Log.e(TAG, "$prefTheme")
+        checkDarkMode()
 
 
         var theme = sharedPref.getInt(getString(R.string.current_theme), R.style.AppTheme)
@@ -71,6 +75,11 @@ class MainActivity : AppCompatActivity(), ApproveTransactionDialog.ApproveTransa
         val tesTheme = resources.getIdentifier(prefTheme, "style", this.packageName)
         Log.e(TAG, "$theme = $tesTheme")
         setTheme(tesTheme)
+        when (darkMode) {
+            "dark" -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES) }
+            "light" -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) }
+            "system" -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) }
+        }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.main_toolbar))
@@ -111,13 +120,6 @@ class MainActivity : AppCompatActivity(), ApproveTransactionDialog.ApproveTransa
         Log.d(TAG, "onUserInteraction")
     }
 
-
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        Log.d(TAG, "onNewIntent $intent")
-    }
-
     private fun buildNotificationServiceAlertDialog(): AlertDialog {
         val alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setTitle(R.string.notification_listener_service)
@@ -132,8 +134,6 @@ class MainActivity : AppCompatActivity(), ApproveTransactionDialog.ApproveTransa
 
         return alertDialogBuilder.create()
     }
-
-
 
     override fun onPause() {
         super.onPause()
@@ -193,8 +193,21 @@ class MainActivity : AppCompatActivity(), ApproveTransactionDialog.ApproveTransa
     override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
         preference?.onPreferenceChangeListener = this
         Log.e(TAG, "Pending Preference value is: $newValue")
-
         return true
+    }
+
+    private fun checkDarkMode() {
+        val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+        when (currentNightMode) {
+            Configuration.UI_MODE_NIGHT_NO -> {Log.e(TAG, "Light")} // Night mode is not active, we're using the light theme
+            Configuration.UI_MODE_NIGHT_YES -> {Log.e(TAG, "Dark")} // Night mode is active, we're using dark theme
+
+        }
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        Log.d(TAG, "onConfigurationChanged")
     }
 
 

@@ -28,6 +28,10 @@ class SpendingNotificationService : NotificationListenerService() {
         val OTHER_NOTIFICATIONS_CODE = 2
     }
 
+    companion object {
+        const val TAG = "acali Spending Notification Service"
+    }
+
     /**
     override fun onBind(intent: Intent): IBinder {
     Log.d("acali", "SpendingNotificationService - onBind")
@@ -38,13 +42,18 @@ class SpendingNotificationService : NotificationListenerService() {
 
     override fun onListenerConnected() {
         super.onListenerConnected()
-        Log.d("acali", "SpendingNotificationService - onListenerConnected")
+        Log.d(TAG, "onListenerConnected")
 
+    }
+
+    override fun onListenerDisconnected() {
+        super.onListenerDisconnected()
+        Log.d(TAG, "onListenerDisconnected")
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification?, rankingMap: RankingMap?) {
         super.onNotificationPosted(sbn, rankingMap)
-        Log.d("acali", "SpendingNotificationService - onNotificationPosted")
+        Log.d(TAG, "onNotificationPosted")
         val notificationCode = sbn?.let { matchNotificationCode(it) }
 
         if (notificationCode != InterceptedNotificationCode().OTHER_NOTIFICATIONS_CODE) {
@@ -78,16 +87,16 @@ class SpendingNotificationService : NotificationListenerService() {
                 getSharedPreferences(getString(R.string.api_token), Context.MODE_PRIVATE)
                     ?: return
             val token = sharedPref.getString(getString(R.string.api_token), "")
-            Log.d("acali", "Saving to Server")
+            Log.d(TAG, "Saving to Server")
             val response = LedgrDataSource(applicationContext, token).post("https://api.ledgr.site/transactions/pending", requestBody)
-            Log.d("acali", response.toString())
+            Log.d(TAG, response.toString())
         }
     }
 
 
     override fun onNotificationRemoved(sbn: StatusBarNotification) {
         super.onNotificationRemoved(sbn)
-        Log.d("acali", "SpendingNotificationService - onNotificationRemoved")
+        Log.d(TAG, "onNotificationRemoved")
 
         /**
         // Get the code for StatusBarNotification that was removed.

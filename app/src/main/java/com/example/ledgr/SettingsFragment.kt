@@ -1,6 +1,7 @@
 package com.example.ledgr
 
 import android.content.SharedPreferences
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
@@ -24,9 +25,18 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceClic
         }
         */
 
+
+
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
+
+        val version = findPreference<Preference>("version")
+        
+        version?.summaryProvider = Preference.SummaryProvider<Preference> { preference ->
+            getPackageVersion()
+        }
+
     }
 
 
@@ -46,7 +56,7 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceClic
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         val selectedPref = sharedPreferences!!.getString(key, "")
-        Log.e(TAG, selectedPref.toString())
+        Log.e(TAG, "onSharedPreferenceChanged $selectedPref")
         if (key == "darkmode") {
             when (selectedPref) {
                 "dark" -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES) }
@@ -75,6 +85,17 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceClic
             onSharedPreferenceChanged(sharedPreferences, key)
         }
         super.onPause()
+    }
+
+    private fun getPackageVersion(): String {
+        val packageInfo = context?.packageManager?.getPackageInfo(context?.packageName.toString(), 0)
+        return if (Build.VERSION.SDK_INT >= 28) {
+            "${packageInfo?.versionName} (${packageInfo?.longVersionCode})"
+        }
+        else {
+            "${packageInfo?.versionName}"
+        }
+
     }
 
 

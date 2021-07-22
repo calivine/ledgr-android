@@ -23,6 +23,12 @@
         app:key="account_category"
         app:title="Accounts">
 
+        <Preference
+            app:key="version"
+            app:title="Version"
+            app:useSimpleSummaryProvider="true"
+            />
+
     </PreferenceCategory>
 
 

@@ -48,6 +48,10 @@ class DashboardFragment : Fragment(), PendingTransactionsAdapter.PendingDialogLi
     private lateinit var pendingTransactionsAdapter: PendingTransactionsAdapter
     // private lateinit var tracker: SelectionTracker<Long>
 
+    companion object {
+        const val TAG = "acali Dashboard Fragment"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -60,20 +64,20 @@ class DashboardFragment : Fragment(), PendingTransactionsAdapter.PendingDialogLi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("acaliDASHBOARD_FRAGMENT", "onCreate was called")
+        Log.d(TAG, "onCreate was called")
         pendingTransactionsAdapter = activity?.let { PendingTransactionsAdapter(it) }!!
 
         setFragmentResultListener("pendingTransactionApproved") { requestKey, bundle ->
-            Log.d("acalifragmentResultListener", "fragmentResultListener called")
+            Log.d(TAG, "fragmentResultListener called")
 
-            Log.d("acalifragmentResultListener", "fragmentResultListener ${bundle.getString("index")}")
+            Log.d(TAG, "fragmentResultListener ${bundle.getString("index")}")
 
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("acaliDASHBOARD_FRAGMENT", "onViewCreated was called")
+        Log.d(TAG, "onViewCreated was called")
 
         // Spending by categories ListView
         // val budgetlist = activity?.findViewById<ListView>(R.id.budget_list)
@@ -101,67 +105,6 @@ class DashboardFragment : Fragment(), PendingTransactionsAdapter.PendingDialogLi
             it.itemAnimator = ExpandableItemAnimator()
             it.adapter = pendingTransactionsAdapter
         }
-        /**
-        tracker = SelectionTracker.Builder<Long>("selectedPendingTransaction",
-            pending_transaction_container,
-            StableIdKeyProvider(pending_transaction_container),
-            PendingItemLookup(pending_transaction_container),
-            StorageStrategy.createLongStorage()
-            ).withSelectionPredicate(
-                SelectionPredicates.createSelectAnything()
-            ).build()
-
-        pendingTransactionsAdapter.tracker = tracker
-
-        tracker.addObserver(
-            object: SelectionTracker.SelectionObserver<Long>() {
-                override fun onSelectionChanged() {
-                    super.onSelectionChanged()
-
-                    if (tracker.selection.size() > 0) {
-
-                        val first = tracker.selection.first().toInt()
-                        val trS = tracker.selection.last().toInt()
-                        if (trS > 0) {
-                            val selection = pendingTransactionsAdapter.pendingList.transactions[tracker.selection.last().toInt() - 1]
-                            val selectedId = selection.id
-                            val pendingTransaction = selection // PendingTransaction(date, desc, amount.toFloat())
-                            val dialog = ApproveTransactionDialog(selection.description, pendingTransaction, selectedId)
-                            // val dialog = ApproveTransactionDialog(selection.get("text").toString(), pendingTransaction, selectedId)
-                            dialog.show(requireActivity().supportFragmentManager, "ApproveTransactionDialog")
-
-                        }
-                        else {
-                            pendingTransactionsAdapter.isExpanded = !pendingTransactionsAdapter.isExpanded
-                        }
-                        /**
-                        val date = selection
-                            .date
-                            // .toString()
-                            .removeSurrounding("\"")
-                            .substringBefore(" ")
-                        val description = selection
-                            .description
-                            // .toString()
-                            .removeSurrounding("\"")
-                            .substring(19)
-                            .substringBefore(" was approved.")
-                            .split(" at ")
-                        val amount = description[0]
-                        val desc = description[1]
-                        Log.d("acali PendingTransactionsAdapter", description.toString())
-                        */
-
-                    }
-
-                }
-            }
-
-        )
-
-        */
-
-
 
         dashboardViewModel.also {
             it.get(url)
@@ -230,93 +173,52 @@ class DashboardFragment : Fragment(), PendingTransactionsAdapter.PendingDialogLi
         new_transaction_FAB.setOnClickListener {
             findNavController().navigate(R.id.action_dashboard_to_newTransactionFragment)
         }
-        /**
-        // Connect to Ledgr Database
-        dashboardViewModel.get(url)
 
-
-        dashboardViewModel.budget.observe(viewLifecycleOwner, Observer {
-            val budgetList: JsonArray = it as JsonArray
-            val viewList = dataRepository.budgetListForView(budgetList)
-
-            // Initialize Adapter with budget data.
-            val budgetListAdapter = BudgetProgressListAdapter(viewList, requireActivity())
-
-            // budget_list.adapter = budgetListAdapter
-
-            budget_list_recycler.adapter = budgetListAdapter
-            // budgetlist?.adapter = budgetListAdapter
-        })
-
-        dashboardViewModel.spending.observe(viewLifecycleOwner, Observer {
-            var totalSpending = 0F
-            var plannedSpending = 0F
-            val budgetList: JsonArray = it as JsonArray
-            for (budgetItem in budgetList) {
-                totalSpending += budgetItem.asJsonObject.get("actual").asFloat
-                plannedSpending += budgetItem.asJsonObject.get("planned").asFloat
-            }
-            val roundedTotal = round(totalSpending)
-            progress_bar_test.apply {
-                setActual(0F)
-                setPlanned(plannedSpending)
-            }
-            ObjectAnimator.ofFloat(progress_bar_test, "actual", 0F, totalSpending.toFloat()).apply {
-                duration = 2000
-                interpolator = DecelerateInterpolator()
-                start()
-            }
-            // progress_bar_test
-            val display = "$${roundedTotal}"
-            // spendingDisplay?.setFormattedText(display)
-            spending_display.setFormattedText(display)
-        })
-        */
     }
 
     override fun onCreateDialog() {
-        Log.d("acaliDASHBOARD_FRAGMENT", "onCreateDialog")
+        Log.d(TAG, "onCreateDialog")
     }
 
     override fun onItemClicked(transaction: PendingTransaction) {
-        Log.d("acaliDASHBOARD_FRAGMENT", "$transaction")
+        Log.d(TAG, "$transaction")
 
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d("acaliDASHBOARD_FRAGMENT", "onResume was called")
+        Log.d(TAG, "onResume was called")
     }
 
     override fun onStart() {
         super.onStart()
-        Log.d("acaliDASHBOARD_FRAGMENT", "onStart was called")
+        Log.d(TAG, "onStart was called")
 
     }
 
     override fun onPause() {
         super.onPause()
-        Log.d("acaliDASHBOARD_FRAGMENT", "onPause was called")
+        Log.d(TAG, "onPause was called")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d("acaliDASHBOARD_FRAGMENT", "onStop was called")
+        Log.d(TAG, "onStop was called")
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.d("acaliDASHBOARD_FRAGMENT", "onDestroyView called")
+        Log.d(TAG, "onDestroyView called")
     }
 
     override fun onDetach() {
         super.onDetach()
-        Log.d("acaliDASHBOARD_FRAGMENT", "onDetach called")
+        Log.d(TAG, "onDetach called")
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        Log.d("acaliDASHBOARD_FRAGMENT", "onViewStateRestored was called")
+        Log.d(TAG, "onViewStateRestored was called")
 
     }
 

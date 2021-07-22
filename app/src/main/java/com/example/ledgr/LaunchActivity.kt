@@ -81,6 +81,7 @@ class LaunchActivity : AppCompatActivity() {
         false
     }
 
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,7 +89,7 @@ class LaunchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_launch)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        Log.d("acali-LaunchActivity", "onCreate was called")
+        Log.d(TAG, "onCreate was called")
 
         isFullscreen = true
 
@@ -265,12 +266,12 @@ class LaunchActivity : AppCompatActivity() {
 
     override fun onRestart() {
         super.onRestart()
-        Log.d("acali-LaunchActivity", "OnRestart was called")
+        Log.d(TAG, "OnRestart was called")
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d("acali-LaunchActivity", "OnResume was called")
+        Log.d(TAG, "OnResume was called")
         val animX = ObjectAnimator.ofFloat(fullscreenContent, "scaleX", 1F, 0F)
         val animY = ObjectAnimator.ofFloat(fullscreenContent, "scaleY", 1F, 0F)
         AnimatorSet().apply {
@@ -290,18 +291,18 @@ class LaunchActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        Log.d("acali-LaunchActivity", "onPause was called")
+        Log.d(TAG, "onPause was called")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d("acali-LaunchActivity", "onStop was called")
+        Log.d(TAG, "onStop was called")
     }
 
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("acali-LaunchActivity", "onDestroy was called")
+        Log.d(TAG, "onDestroy was called")
     }
     */
 
@@ -324,5 +325,7 @@ class LaunchActivity : AppCompatActivity() {
          * and a change of the status and navigation bar.
          */
         private const val UI_ANIMATION_DELAY = 300
+
+        const val TAG = "acali Launch Activity"
     }
 }
