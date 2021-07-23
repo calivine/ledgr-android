@@ -11,8 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/num1"
@@ -37,8 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/row1">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/num4"
@@ -62,8 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/row2">
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/num7"
@@ -88,7 +85,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintTop_toBottomOf="@id/row3">
+        >
 
         <Button
             android:id="@+id/decimalPoint"

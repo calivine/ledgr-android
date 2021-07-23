@@ -103,6 +103,7 @@ class ApproveTransactionDialog(val pendingTransaction: PendingTransaction, val p
 
 
             // notification_text.text = text
+
             builder.create()
 
         } ?: throw IllegalStateException("Activity cannot be null")
