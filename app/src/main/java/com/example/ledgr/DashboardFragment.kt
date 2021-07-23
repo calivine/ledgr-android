@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
@@ -169,7 +170,7 @@ class DashboardFragment : Fragment(), PendingTransactionsAdapter.PendingDialogLi
                 spending_display.setFormattedText(display)
             })
         }
-        
+
     }
 
     override fun onCreateDialog() {
@@ -222,6 +223,8 @@ class DashboardFragment : Fragment(), PendingTransactionsAdapter.PendingDialogLi
         Log.d("acali", "Removing at $position")
         pendingTransactionsAdapter.deleteItem(position)
     }
+
+
 
 
 }

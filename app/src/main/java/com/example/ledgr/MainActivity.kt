@@ -11,6 +11,7 @@ import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -212,6 +213,17 @@ class MainActivity : AppCompatActivity(), ApproveTransactionDialog.ApproveTransa
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
         Log.d(TAG, "onConfigurationChanged")
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when(item.itemId) {
+        R.id.action_new_transaction -> {
+            navController.navigate(R.id.action_dashboard_to_newTransactionFragment)
+            true
+        }
+        else -> {
+            super.onOptionsItemSelected(item)
+        }
+
     }
 
 
