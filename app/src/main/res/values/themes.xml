@@ -26,7 +26,10 @@
 
         <item name="android:statusBarColor">@color/ledgr_primary</item>
         <item name="android:navigationBarColor">@color/ledgr_primary</item>
+
+
         <!--
+        <item name="android:windowActionBar">true</item>
         <item name="android:windowActivityTransitions">true</item>
         <item name="android:windowEnterTransition">@transition/fade_transition</item>
         -->

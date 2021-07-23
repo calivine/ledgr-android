@@ -33,6 +33,10 @@ class ViewTransactionsFragment : Fragment() {
 
     private lateinit var transactionsViewModel: TransactionsViewModel
 
+    companion object {
+        const val TAG = "acali ViewTransactions Fragment"
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -85,23 +89,6 @@ class ViewTransactionsFragment : Fragment() {
                         "${item.asJsonObject.get("amount")}.00"
                     ).count() == 1
                 ) "$${item.asJsonObject.get("amount").asString}0" else "$${item.asJsonObject.get("amount").asString}"
-                /**
-                val tMap = mapOf<String, String>(
-                "date" to item.asJsonObject.get("date").asString,
-                "category" to item.asJsonObject.get("category").asString,
-                "description" to item.asJsonObject.get("description").asString,
-                "amount" to amount
-                )
-
-                val transaction = Transaction(
-                date=item.asJsonObject.get("date").asString,
-                category=item.asJsonObject.get("category").asString,
-                description = item.asJsonObject.get("description").asString,
-                amount = item.asJsonObject.get("amount").asFloat
-                )
-
-                transactionList.add(transaction)
-                 */
 
                 transactionList.add(Transaction(
                     date=Date().displayAsString(item.asJsonObject.get("date").asString),
@@ -110,10 +97,10 @@ class ViewTransactionsFragment : Fragment() {
                     amount = item.asJsonObject.get("amount").asFloat
                 ))
                 val dateTest = Date().displayAsString(item.asJsonObject.get("date").asString)
-                Log.d("acaliDatetest", dateTest)
+
             }
 
-            Log.i("acali.arrayMap", transactionsList.toString())
+            Log.i(TAG, transactionsList.toString())
 
             val transactionListAdapterClass =
                 TransactionListAdapter(requireActivity(), transactionList)
@@ -124,7 +111,7 @@ class ViewTransactionsFragment : Fragment() {
         })
 
         transaction_list_refresh.setOnRefreshListener {
-            Log.d("acaliONREFRESH", "onRefresh called from SwipeRefreshLayout")
+            Log.d(TAG, "onRefresh called from SwipeRefreshLayout")
             transactionList.clear()
             // ledgr.transactions().getLegacy(transactions)
             transactionsViewModel.get(url)
@@ -134,28 +121,28 @@ class ViewTransactionsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("acali-ViewTransactionsFragment", "onCreate was called")
+        Log.d(TAG, "onCreate was called")
     }
 
     override fun onPause() {
         super.onPause()
-        Log.d("acali-ViewTransactionsFragment", "onPause was called")
+        Log.d(TAG, "onPause was called")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d("acali-ViewTransactionsFragment", "onStop was called")
+        Log.d(TAG, "onStop was called")
     }
 
     override fun onResume() {
         super.onResume()
 
-        Log.d("acali-ViewTransactionsFragment", "onResume was called")
+        Log.d(TAG, "onResume was called")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("acali-ViewTransactionsFragment", "onDestroy was called")
+        Log.d(TAG, "onDestroy was called")
     }
 
 }

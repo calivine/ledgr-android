@@ -32,7 +32,7 @@ class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceClic
         setPreferencesFromResource(R.xml.root_preferences, rootKey)
 
         val version = findPreference<Preference>("version")
-        
+
         version?.summaryProvider = Preference.SummaryProvider<Preference> { preference ->
             getPackageVersion()
         }

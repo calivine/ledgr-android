@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
 import android.util.Log
+import android.view.Menu
 import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -57,33 +58,29 @@ class MainActivity : AppCompatActivity(), ApproveTransactionDialog.ApproveTransa
                 ?: return
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        sharedPreferences.registerOnSharedPreferenceChangeListener { sharedPreferences, key ->
 
 
-        }
         val darkMode = sharedPreferences.getString("darkmode", "system")
         val prefTheme = PreferenceManager.getDefaultSharedPreferences(this).getString("theme", "AppTheme")
 
         Log.e(TAG, "$prefTheme")
         checkDarkMode()
 
+        val theme = resources.getIdentifier(prefTheme, "style", this.packageName)
+        setTheme(theme)
 
-        var theme = sharedPref.getInt(getString(R.string.current_theme), R.style.AppTheme)
-        Log.e(TAG, "$theme")
-        // setTheme(theme)
-        theme = R.style.AppTheme
-        val tesTheme = resources.getIdentifier(prefTheme, "style", this.packageName)
-        Log.e(TAG, "$theme = $tesTheme")
-        setTheme(tesTheme)
         when (darkMode) {
             "dark" -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES) }
             "light" -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO) }
             "system" -> { AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM) }
         }
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
+
         setSupportActionBar(findViewById(R.id.main_toolbar))
-        supportActionBar!!.title = ""
+
+        supportActionBar?.title = ""
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.layout_frame) as NavHostFragment
         navController = navHostFragment.navController
@@ -118,6 +115,13 @@ class MainActivity : AppCompatActivity(), ApproveTransactionDialog.ApproveTransa
     override fun onUserInteraction() {
         super.onUserInteraction()
         Log.d(TAG, "onUserInteraction")
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.toolbar_menu, menu)
+        return true // super.onCreateOptionsMenu(menu)
+
     }
 
     private fun buildNotificationServiceAlertDialog(): AlertDialog {

@@ -169,11 +169,7 @@ class DashboardFragment : Fragment(), PendingTransactionsAdapter.PendingDialogLi
                 spending_display.setFormattedText(display)
             })
         }
-
-        new_transaction_FAB.setOnClickListener {
-            findNavController().navigate(R.id.action_dashboard_to_newTransactionFragment)
-        }
-
+        
     }
 
     override fun onCreateDialog() {
