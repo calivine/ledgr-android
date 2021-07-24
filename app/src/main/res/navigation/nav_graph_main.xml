@@ -4,6 +4,9 @@
     android:id="@+id/nav_graph_main"
     app:startDestination="@+id/home">
 
+    <action android:id="@+id/action_global_NewTransactionFragment"
+        app:destination="@+id/create" />
+
     <include app:graph="@navigation/dashboard"/>
     <include app:graph="@navigation/create"/>
     <include app:graph="@navigation/list"/>

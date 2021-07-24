@@ -217,7 +217,7 @@ class MainActivity : AppCompatActivity(), ApproveTransactionDialog.ApproveTransa
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when(item.itemId) {
         R.id.action_new_transaction -> {
-            navController.navigate(R.id.action_dashboard_to_newTransactionFragment)
+            navController.navigate(R.id.action_global_NewTransactionFragment)
             true
         }
         else -> {
