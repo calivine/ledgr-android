@@ -1,5 +1,6 @@
 package com.example.ledgr.ui.newTransaction
 
+import android.animation.ObjectAnimator
 import com.example.ledgr.data.LedgrDataSource
 import android.app.DatePickerDialog
 import android.content.Context
@@ -33,6 +34,7 @@ import com.google.gson.JsonObject
 import com.koushikdutta.ion.Ion
 import kotlinx.android.synthetic.main.bottom_navigation.*
 import kotlinx.android.synthetic.main.fragment_new_transaction.*
+import kotlinx.android.synthetic.main.transaction_item.*
 import kotlinx.coroutines.selects.select
 import java.util.*
 
@@ -48,6 +50,8 @@ class NewTransactionFragment : Fragment() {
     private var dateDisplay = Date()
     // var amountDisplay: MutableLiveData<String> = MutableLiveData()
 
+    private var state = "DOLLARS"
+
 
 
     private lateinit var newTransactionViewModel: NewTransactionViewModel
@@ -58,8 +62,12 @@ class NewTransactionFragment : Fragment() {
 
     private lateinit var chosenCategory: String
 
-
-
+    companion object {
+        const val TAG = "acali NewTransaction Fragment"
+        const val X_SHIFT_LEFT = -160F
+        const val X_SHIFT_RIGHT = 160F
+    }
+    
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -172,16 +180,13 @@ class NewTransactionFragment : Fragment() {
                     chosenCategory = selected
 
 
-                    Log.d("acali", "Selection: ${selected}")
+                    Log.d(TAG, "Selection: ${selected}")
 
 
                     // Log.d("acali", selected)
                 }
             }
         )
-
-
-
 
         dataRepository = DataBuilder()
 
@@ -243,7 +248,7 @@ class NewTransactionFragment : Fragment() {
         }
         form["desc"]?.requestFocus()
 
-        Log.d("acali-ledgrJSON: ", json.toString())
+        Log.d(TAG, "LedgrJSON $json")
 
         val ledgr = LedgrDataSource(requireActivity(), token)
         val res = ledgr.post("https://api.ledgr.site/transactions", json)  // ledgr.newTransaction().postLegacy(json, this.startMainActivity())
@@ -284,8 +289,8 @@ class NewTransactionFragment : Fragment() {
             } else {
                 "0${month+1}"
             }
-            Log.d("acalidpd:", formattedDay.toString())
-            Log.d("acalidpd:", formattedMonth.toString())
+            Log.d(TAG, "dpd $formattedDay")
+            Log.d(TAG, "dpd $formattedMonth")
             val date = "${year}-${formattedMonth}-${formattedDay}"
             /*
             val date: String = if (day - 10 >= 0) {
@@ -302,7 +307,7 @@ class NewTransactionFragment : Fragment() {
     }
 
     private fun startMainActivity() {
-        Log.d("acaliNewTransactionFragment", "starting MainActivity")
+        Log.d(TAG, "starting MainActivity")
         val myIntent = Intent(activity, MainActivity::class.java)
         myIntent.putExtra("username", arguments?.getString("username").toString().removeSurrounding("\""))
         myIntent.putExtra("api", arguments?.getString("api").toString().removeSurrounding("\""))
@@ -311,92 +316,132 @@ class NewTransactionFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        Log.d("acaliNewTransactionFragment", "onPause was called")
+        Log.d(TAG, "onPause was called")
     }
 
     override fun onStop() {
         super.onStop()
-        Log.d("acaliNewTransactionFragment", "onStop was called")
+        Log.d(TAG, "onStop was called")
     }
 
     override fun onResume() {
         super.onResume()
         date.observe(this, {
-            Log.d("acali-Observer", it)
+            Log.d(TAG, "Observer: $it")
             // date__label.text = it
         })
-        Log.d("acaliNewTransactionFragment", "onResume was called")
+        Log.d(TAG, "onResume was called")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("acaliNewTransactionFragment", "onDestroy was called")
+        Log.d(TAG, "onDestroy was called")
+    }
+
+    private fun updateDollars(number: String) {
+        if (decimalClicked(number)) {
+            // Animate movement
+            shiftDisplay("LEFT")
+            revealDecimal()
+            state = "CENT1"
+            return
+        }
+        amount_display.update(number)
+    }
+
+    private fun updateCents(number: String) {
+        when(state) {
+            "CENT1" -> {
+                amount_display_cent1.update(number)
+                state = "CENT2"
+            }
+            "CENT2" -> {
+                amount_display_cent2.update(number)
+            }
+        }
     }
 
     private fun numberPadClick(number:String) {
         val displayText = amount_display.text.toString()
-        Log.i("acaliNUMPADCLICK", amount_display.text.toString())
-        if ((number == "." && amount_display.text.contains('.'))) {
-                return
+        Log.i(TAG, "onClick $displayText")
+        Log.d(TAG, "$number clicked")
+        //amount_display.onClick(number)
+        when(state) {
+            "DOLLARS" -> { updateDollars(number) } // Update dollars function
+            "CENT" -> { updateCents(number) }   // Update cents function
+            "CENT1" -> { updateCents(number) }
+            "CENT2" -> { updateCents(number) }
         }
-        else if (displayText.contains(Regex("^[\\d]+\\.[\\d]{2}")) && displayText != "0.00") {
-            return
-        }
-        if (displayText == "0.00" || displayText == "0") {
 
-            if (number == ".") {
-                if (amount_display.text.contains('.')) {
-                    return
-                }
-                else {
-                    val new = "${amount_display.text}${number}"
-                    amount_display.text = new
-                }
-
-            }
-            else {
-                amount_display.text = number
-            }
-
-        }
-        else {
-            val new = "${amount_display.text}${number}"
-            amount_display.text = new
-        }
     }
 
     private fun numberPadBackspace() {
-        val displayText = amount_display.text.toString()
-        amount_display.text = displayText.dropLast(1)
-        if (amount_display.text == "") {
-            amount_display.text = resources.getString(R.string.amount_label)
+
+        when(state) {
+            "CENT1" -> {
+                if (amount_display_cent1.placeholder && amount_display_cent2.placeholder) {
+                    hideDecimal()
+                    state = "DOLLARS"
+                    shiftDisplay("RIGHT")
+                }
+                else {
+                    amount_display_cent1.backspace()
+
+                }
+            }
+            "CENT2" -> {
+                amount_display_cent2.backspace()
+                state = "CENT1"
+            }
+            "DOLLARS" -> {
+                amount_display.backspace()
+            }
+
         }
 
     }
 
-    /*
+    private fun addingDollars(number: String): Boolean {
+        return true
+    }
 
-    private fun serializeDate(date: String): String {
-        val c = Calendar.getInstance()
-        val months = c.getDisplayNames(Calendar.MONTH, Calendar.LONG, Locale.ROOT)
-        val dateArray = date.split(' ')
-        Log.i("acaliserializeDate", dateArray.toString())
-        val monthNum = months[dateArray[1]]
-        if (monthNum != null) {
-            return "${dateArray[2]}-${monthNum+1}-${dateArray[0]}"
+    private fun decimalClicked(number: String): Boolean {
+        return number == "."
+    }
+
+    private fun addingCents(number: String): Boolean {
+        return true
+    }
+
+    private fun isThousands(number: String): Boolean {
+        return number.substringBefore('.').length >= 4
+    }
+
+    private fun hasDecimal(number: String): Boolean {
+        return number.contains('.')
+    }
+
+    private fun revealDecimal() {
+        decimal_display.visibility = View.VISIBLE
+        amount_display_cent1.visibility = View.VISIBLE
+        amount_display_cent2.visibility = View.VISIBLE
+    }
+
+    private fun hideDecimal() {
+        decimal_display.visibility = View.INVISIBLE
+        amount_display_cent1.visibility = View.INVISIBLE
+        amount_display_cent2.visibility = View.INVISIBLE
+    }
+
+    private fun shiftDisplay(direction:String) {
+        val shiftDirection = if (direction == "LEFT") { X_SHIFT_LEFT } else { X_SHIFT_RIGHT }
+        val displayList = arrayListOf<Any>(display_dollar_sign, amount_display, decimal_display, amount_display_cent1, amount_display_cent2)
+        for (view in displayList) {
+            ObjectAnimator.ofFloat(view, "translationX", shiftDirection).apply {
+                duration=250
+                start()
+            }
         }
-        return ""
     }
-
-    private fun dateToString(date:String): String {
-        val months = mutableListOf<String>("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December")
-
-
-        val dateArray = date.split('-')
-        val monthString = months[dateArray[1].toInt() -1]
-        return "${dateArray[2]} $monthString ${dateArray[0]}"
-    }
-
-     */
 }
 

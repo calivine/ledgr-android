@@ -30,16 +30,15 @@ open class LedgrDataSource(activity: Context, token: String?) {
 
     private val _liveData = MutableLiveData<Any>()
 
+    companion object {
+        const val TAG = "acali LedgrDataSource"
+    }
+
 
     init {
         Ion.getDefault(activity).conscryptMiddleware.enable(false)
     }
 
-    fun setApiToken(token: String) {
-        _bearer = token
-
-        auth = "?api_token=${token}"
-    }
 
     fun connect(): MutableLiveData<Any> {
         return _liveData
@@ -66,7 +65,7 @@ open class LedgrDataSource(activity: Context, token: String?) {
         return Ion.with(_activity)
             .load("POST", url)
             .setHeader("authorization", bearer)
-            .setLogging("acali-API", Log.INFO)
+            .setLogging(TAG, Log.INFO)
             .setJsonObjectBody(json)
             .asJsonObject()
             .get()
@@ -92,7 +91,7 @@ open class LedgrDataSource(activity: Context, token: String?) {
         return Ion.with(_activity)
             .load(method, uri.toString())
             .setHeader("authorization", bearer)
-            .setLogging("acali-API", Log.INFO)
+            .setLogging(TAG, Log.INFO)
             .setJsonObjectBody(json)
             .asJsonObject()
             .get()
@@ -102,7 +101,7 @@ open class LedgrDataSource(activity: Context, token: String?) {
         return Ion.with(_activity)
             .load(route)
             .setHeader("authorization", bearer)
-            .setLogging("acali-API", Log.INFO)
+            .setLogging(TAG, Log.INFO)
             .asJsonObject()
             .get()
         /**
@@ -126,7 +125,7 @@ open class LedgrDataSource(activity: Context, token: String?) {
                 if (ex != null) {
                     Log.i("acali", ex.message)
                 } else if (result != null) {
-                    // Log.i("acali", result.getAsJsonArray("data").toString())
+                    Log.i(TAG, result.get("data").toString())
                     _liveData.value = result.get("data")
                 }
 

@@ -19,14 +19,19 @@ class DataBuilder() {
     fun pendingTransactionsList(data: JsonArray): ArrayList<PendingTransaction> {
         val viewList: ArrayList<PendingTransaction> = ArrayList()
         data.forEach {
-            viewList.add(
-                PendingTransaction(
-                    it.asJsonObject.get("id").asInt,
-                    it.asJsonObject.get("created_at").asString,
-                    it.asJsonObject.get("text").asString.substring(19).substringBefore(" was approved.").split(" at ")[1],
-                    it.asJsonObject.get("text").asString.substring(19).substringBefore(" was approved.").split(" at ")[0].toFloat()
+            val responseObject = it.asJsonObject
+            if (responseObject.get("text").asString.length > 19) {
+                viewList.add(
+                    PendingTransaction(
+                        it.asJsonObject.get("id").asInt,
+                        it.asJsonObject.get("created_at").asString,
+                        it.asJsonObject.get("text").asString.substring(19).substringBefore(" was approved.").split(" at ")[1],
+                        it.asJsonObject.get("text").asString.substring(19).substringBefore(" was approved.").split(" at ")[0].toFloat()
+                    )
                 )
-            )
+
+            }
+
         }
         return viewList
 

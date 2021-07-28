@@ -47,7 +47,6 @@ class DashboardFragment : Fragment(), PendingTransactionsAdapter.PendingDialogLi
     private lateinit var dashboardViewModel: DashboardViewModel
     private lateinit var dataRepository: DataBuilder
     private lateinit var pendingTransactionsAdapter: PendingTransactionsAdapter
-    // private lateinit var tracker: SelectionTracker<Long>
 
     companion object {
         const val TAG = "acali Dashboard Fragment"
@@ -61,19 +60,10 @@ class DashboardFragment : Fragment(), PendingTransactionsAdapter.PendingDialogLi
         return inflater.inflate(R.layout.fragment_dashboard, container, false)
     }
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate was called")
         pendingTransactionsAdapter = activity?.let { PendingTransactionsAdapter(it) }!!
-
-        setFragmentResultListener("pendingTransactionApproved") { requestKey, bundle ->
-            Log.d(TAG, "fragmentResultListener called")
-
-            Log.d(TAG, "fragmentResultListener ${bundle.getString("index")}")
-
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -126,7 +116,11 @@ class DashboardFragment : Fragment(), PendingTransactionsAdapter.PendingDialogLi
 
 
                 // pendingTransactionsAdapter.pendingList = pList
+
                 pendingTransactionsAdapter.pendingList.transactions = pendingTransactions
+                if (pendingTransactions.size < 1) {
+                    pending_transaction_container.visibility = View.INVISIBLE
+                }
                 pendingTransactionsAdapter.notifyDataSetChanged()
 
             })
